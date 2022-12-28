@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Customers</title>
+    </head>
+
+    <body>
+        <h1>Customers</h1>
+        <p>Customers page content</p>
+
+        <table>
+            <thread>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Billing Address</th>
+                </tr>
+            </thread>
+
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer[0] }}</td>
+                    <td>{{ customer[1] }}</td>
+                    <td>{{ customer[2] }}</td>
+                    <td>{{ customer[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
