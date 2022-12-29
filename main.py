@@ -103,3 +103,123 @@ def handle_execute_update_customer():
     conn.commit()
 
     return redirect('/customers')
+
+
+
+@app.route('/products')
+def handle_get_products():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM products")
+        products = [list(t) for t in cursor.fetchall()]
+
+        #add categories to products
+        for product in products:
+            cursor.execute(f"SELECT category_id from product_categories WHERE product_id = {product[0]}")
+            all_categories = cursor.fetchall()
+            categories=""
+
+            for category in all_categories:
+                cursor.execute(f"SELECT name from categories WHERE category_id = {category[0]}")
+                categories += "".join(cursor.fetchone()) + ", "
+            
+            categories = categories[:-2]
+
+            if categories == "":
+                categories = "No categories"
+
+            product.append(categories)
+
+    except Exception as e:
+        return render_template('products.html')
+
+    try:
+        cursor.execute("SELECT * FROM categories")
+        categories = cursor.fetchall()
+    except Exception as e:
+        return render_template('products.html', products=products)
+
+    return render_template('products.html', products=products , categories=categories)
+
+@app.route('/add-product', methods=['POST'])
+def handle_add_product():
+    name = request.form['name']
+    price = request.form['price']
+    description = request.form['description']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO products (name, price, description) VALUES (%s, %s, %s)", (name, price, description))
+    conn.commit()
+
+    return redirect('/products')
+
+
+@app.route('/remove-product', methods=['POST'])
+def handle_remove_product():
+    product_id = request.form['product_id']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"DELETE FROM products WHERE product_id = {product_id}")
+    conn.commit()
+
+    return redirect('/products')
+
+
+@app.route('/update-product', methods=['POST','GET'])
+def handle_default_update_product():
+    product_id = request.form['product_id']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"SELECT * FROM products WHERE product_id = {product_id}")
+    product = cursor.fetchone()
+
+    return render_template('update_product.html', product=product)
+    
+
+@app.route('/execute-update-product', methods=['POST'])
+def handle_execute_update_product():
+    product_id = request.form['product_id']
+    name = request.form['name']
+    price = request.form['price']
+    description = request.form['description']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"UPDATE products SET name = '{name}', price = '{price}', description = '{description}' WHERE product_id = {product_id}")
+    conn.commit()
+
+    return redirect('/products') 
+
+@app.route('/add-category', methods=['POST'])
+def handle_add_category():
+    name = request.form['name']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"INSERT INTO categories (name) VALUES ('{name}')")
+    conn.commit()
+
+    return redirect('/products')
+
+@app.route('/add-product-category', methods=['POST'])
+def handle_add_product_category():
+    product_id = request.form['product_id']
+    category_id = request.form['category_id']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"INSERT INTO product_categories (product_id, category_id) VALUES ({product_id}, {category_id})")
+    conn.commit()
+
+    return redirect('/products')

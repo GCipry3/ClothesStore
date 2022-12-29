@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>Products</title>
+        {% include 'blocks/css_links.html' %}
+    </head>
+
+    <body>
+        {% include 'blocks/header.html' %}
+
+        <div class="container-fluid bg" style="height: 100%;width:100%">
+            <div class="text-center">
+                <h1>Products</h1>
+            </div><br><br>
+
+            <div class="row justify-content-center align-items-center" style="width:100%">
+                <div class="col-1" style="width:50%;">
+                    <table class="table table-hover" style="width: 100%">
+                        <thread>
+                            <tr style="font-size:20px;font-weight: bold;">
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                                <th>Categories</th>
+                            </tr>
+                        </thread>
+
+                        <tbody>
+                            {% for product in products %}
+                            <tr style="font-size:18px;font-weight: bold;color:dimgray">
+                                <td>{{ product[0] }}</td>
+                                <td>{{ product[1] }}</td>
+                                <td>{{ product[2] }}</td>
+                                <td>{{ product[3] }}</td>
+                                <td>{{ product[4] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table><br><br><hr>
+
+                    <table class="table table-hover" style="width: 100%">
+                        <thread>
+                            <tr style="font-size:20px;font-weight: bold;">
+                                <th>Category ID</th>
+                                <th>Name</th>
+                            </tr>
+                        </thread>
+
+                        <tbody>
+                            {% for category in categories %}
+                            <tr style="font-size:18px;font-weight: bold;color:dimgray">
+                                <td>{{ category[0] }}</td>
+                                <td>{{ category[1] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-1" style="width:50%">
+                    <form action="/add-product" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="name" style="width:25%">Name</span>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="ex. Blugi">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="price" style="width:25%">Price</span>
+                            <input type="text" name="price" id="price" class="form-control" placeholder="ex. 150 ron">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="description" style="width:25%">Description</span>
+                            <input type="text" name="description" id="description" class="form-control" placeholder="ex. Blugi rupti adusi din Ucraina">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Product</button>
+                    </form><br>
+
+
+                    <form action="/add-category" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="name" style="width:25%">Category Name</span>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="ex. Tricouri">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Category</button>
+                    </form><br><br>
+
+                    <form action="/remove-product" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Remove Product</button>
+                    </form><br><br>
+
+                    <form action="/update-product" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Update Product</button>
+                    </form><br><br>
+
+                    <form action="/add-product-category" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="category_id" style="width:25%">Category ID</span>
+                            <input type="text" name="category_id" id="category_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Category to Product</button>
+                    </form><br><br>
+                </div>
+            </div>
+        </div>
+        {% include 'blocks/js_src.html' %}
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Update Product</title>
+        {% include 'blocks/css_links.html' %}
+    </head>
+
+    <body>
+        {% include 'blocks/header.html' %}
+        <div class="container-fluid text-center bg" style="height: 100%;width:100%">
+            <h1>Update Product</h1>
+
+            <form class="mx-auto" action="/execute-update-product" method="post" style="width:50%">
+                <div class="input-group mb-3 data_input_size">
+                    <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                    <input type="text" name="product_id" id="product_id" value="{{product[0]}}" class="form-control">
+                </div>
+                <div class="input-group mb-3 data_input_size">
+                    <span class="input-group-text" for="name" style="width:25%">Name</span>
+                    <input type="text" name="name" id="name" value="{{product[1]}}" class="form-control">
+                </div>
+                <div class="input-group mb-3 data_input_size">
+                    <span class="input-group-text" for="price" style="width:25%">Email</span>
+                    <input type="text" name="price" id="price" value="{{product[2]}}" class="form-control">
+                </div>
+                <div class="input-group mb-3 data_input_size">
+                    <span class="input-group-text" for="description" style="width:25%">Description</span>
+                    <input type="text" name="description" id="description" value="{{product[3]}}" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-secondary">Update Product</button>
+            </form><br><br>
+
+        </div>
+
+        {% include 'blocks/js_src.html' %}
+    </body>
+</html>
