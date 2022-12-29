@@ -8,20 +8,28 @@
         <p>Update customer page content</p>
 
         <form action="/execute-update-customer" method="post">
-            <label for="customer_id">Customer ID</label>
-            <input type="text" name="customer_id" id="customer_id" value="{{customer[0]}}"><br>
-
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="{{customer[1]}}"><br>
-
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email" value="{{customer[2]}}"><br>
-
-            <label for="billing_address">Billing Address</label>
-            <input type="text" name="billing_address" id="billing_address" value="{{customer[3]}}"><br>
-
-            <button type="submit">Update Customer</button> 
-        </form><br><br><br>
+            <table>
+                <tr>
+                    <td><label for="customer_id">Customer ID</label></td>
+                    <td><input type="text" name="customer_id" id="customer_id" value="{{customer[0]}}"></td>
+                </tr>
+                <tr>
+                    <td><label for="name">Name</label></td>
+                    <td><input type="text" name="name" id="name" value="{{customer[1]}}"></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input type="text" name="email" id="email" value="{{customer[2]}}"></td>
+                </tr>
+                <tr>
+                    <td><label for="billing_address">Billing Address</label></td>
+                    <td><input type="text" name="billing_address" id="billing_address" value="{{customer[3]}}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="submit">Update Customer</button></td>
+                </tr>
+            </table>
+          </form><br><br><br>
 
     </body>
 </html>
