@@ -6,32 +6,34 @@
 
     <body>
         {% include 'blocks/header.html' %}
-        <h1>Update Customer</h1>
-        <p>Update customer page content</p>
+        <div class="container-fluid text-center bg" style="height: 100%;width:100%">
+            <h1>Update Customer</h1>
+            <p>Update customer page content</p>
 
-        <form action="/execute-update-customer" method="post">
-            <table>
-                <tr>
-                    <td><label for="customer_id">Customer ID</label></td>
-                    <td><input type="text" name="customer_id" id="customer_id" value="{{customer[0]}}"></td>
-                </tr>
-                <tr>
-                    <td><label for="name">Name</label></td>
-                    <td><input type="text" name="name" id="name" value="{{customer[1]}}"></td>
-                </tr>
-                <tr>
-                    <td><label for="email">Email</label></td>
-                    <td><input type="text" name="email" id="email" value="{{customer[2]}}"></td>
-                </tr>
-                <tr>
-                    <td><label for="billing_address">Billing Address</label></td>
-                    <td><input type="text" name="billing_address" id="billing_address" value="{{customer[3]}}"></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><button type="submit">Update Customer</button></td>
-                </tr>
-            </table>
-        </form><br><br><br>
+            <form action="/execute-update-customer" method="post">
+                <table>
+                    <tr>
+                        <td><label for="customer_id">Customer ID</label></td>
+                        <td><input type="text" name="customer_id" id="customer_id" value="{{customer[0]}}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="name">Name</label></td>
+                        <td><input type="text" name="name" id="name" value="{{customer[1]}}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email</label></td>
+                        <td><input type="text" name="email" id="email" value="{{customer[2]}}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="billing_address">Billing Address</label></td>
+                        <td><input type="text" name="billing_address" id="billing_address" value="{{customer[3]}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button type="submit">Update Customer</button></td>
+                    </tr>
+                </table>
+            </form><br><br><br>
+        </div>
 
         {% include 'blocks/js_src.html' %}
     </body>
