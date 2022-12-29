@@ -110,97 +110,71 @@ def insert_data():
 
     #customers
     cursor.execute('''
-        INSERT INTO customers (name, email, billing_address)
-        VALUES
-            ('Customer 1', 'customer1@example.com', 'Address 1'),
-            ('Customer 2', 'customer2@example.com', 'Address 2'),
-            ('Customer 3', 'customer3@example.com', 'Address 3'),
-            ('Customer 4', 'customer4@example.com', 'Address 4'),
-            ('Customer 5', 'customer5@example.com', 'Address 5'),
-            ('Customer 6', 'customer6@example.com', 'Address 6'),
-            ('Customer 7', 'customer7@example.com', 'Address 7'),
-            ('Customer 8', 'customer8@example.com', 'Address 8'),
-            ('Customer 9', 'customer9@example.com', 'Address 9'),
-            ('Customer 10', 'customer10@example.com', 'Address 10')
+        INSERT INTO customers (name, email, billing_address) VALUES 
+            ('John Smith', 'john@example.com', '123 Main St'), 
+            ('Jane Doe', 'jane@example.com', '456 Main St'), 
+            ('Bob Johnson', 'bob@example.com', '789 Main St'),
+            ('Samantha Williams', 'samantha@example.com', '321 Oak Avenue'),
+            ('Emily Thompson', 'emily@example.com', '753 Pine Avenue'),
+            ('Kimberly Kim', 'kimberly@example.com', '369 Birch Road')
     ''')
     #products
     cursor.execute('''
-        INSERT INTO products (name, price, description)
-        VALUES
-            ('Product 1', 10.00, 'Description 1'),
-            ('Product 2', 20.00, 'Description 2'),
-            ('Product 3', 30.00, 'Description 3'),
-            ('Product 4', 40.00, 'Description 4'),
-            ('Product 5', 50.00, 'Description 5'),
-            ('Product 6', 60.00, 'Description 6'),
-            ('Product 7', 70.00, 'Description 7'),
-            ('Product 8', 80.00, 'Description 8'),
-            ('Product 9', 90.00, 'Description 9'),
-            ('Product 10', 100.00, 'Description 10')
+        INSERT INTO products (name, price, description) VALUES
+            ('T-Shirt', 29, 'Short sleeve t-shirt'),
+            ('Dress', 79, 'Short sleeve dress'),
+            ('Jeans', 59, 'Blue jeans'),
+            ('Shorts', 39, 'Denim shorts'),
+            ('Skirt', 49, 'Midi length skirt'),
+            ('Blouse', 69, 'White blouse'),
+            ('Shirt', 59, 'Button-up shirt'),
+            ('Sweater', 79, 'Crew neck sweater'),
+            ('Coat', 99, 'Trench coat'),
+            ('Jacket', 79, 'Leather jacket')
     ''')
 
     #categories
     cursor.execute('''
-        INSERT INTO categories (name)
-        VALUES
-            ('Category 1'),
-            ('Category 2'),
-            ('Category 3'),
-            ('Category 4'),
-            ('Category 5'),
-            ('Category 6'),
-            ('Category 7'),
-            ('Category 8'),
-            ('Category 9'),
-            ('Category 10')
+        INSERT INTO categories (name) VALUES
+            ('T-Shirts'),
+            ('Dresses'),
+            ('Jeans'),
+            ('Shorts'),
+            ('Coats'),
+            ('Jackets')
     ''')
 
     #product_categories
     cursor.execute('''
         INSERT INTO product_categories (product_id, category_id)
         VALUES
-            (1, 1),
-            (2, 2),
-            (3, 3),
-            (4, 4),
-            (5, 5),
-            (6, 6),
-            (7, 7),
-            (8, 8),
-            (9, 9),
-            (10, 10)
+            (1, 1)
     ''')
 
     #orders
     cursor.execute('''
-        INSERT INTO orders (customer_id, order_date,total_price, shipping_address)
-        VALUES
-            (1, '2020-01-01 00:00:00',55, 'Address 1'),
-            (2, '2020-01-02 00:00:00',55, 'Address 2'),
-            (3, '2020-01-03 00:00:00',55, 'Address 3'),
-            (4, '2020-01-04 00:00:00',55, 'Address 4'),
-            (5, '2020-01-05 00:00:00',55, 'Address 5'),
-            (6, '2020-01-06 00:00:00',55, 'Address 6'),
-            (7, '2020-01-07 00:00:00',55, 'Address 7'),
-            (8, '2020-01-08 00:00:00',55, 'Address 8'),
-            (9, '2020-01-09 00:00:00',55, 'Address 9'),
-            (10, '2020-01-10 00:00:00',55, 'Address 10')
+        INSERT INTO orders (customer_id, order_date, total_price, shipping_address) VALUES 
+            (1, '2022-01-01 12:00:00', 100, '123 Main St'),
+            (2, '2022-01-02 13:00:00', 50, '456 Main St'),
+            (2, '2022-01-03 14:00:00', 75, '456 Main St'),
+            (4, '2022-01-04 15:00:00', 200, '321 Main St'),
+            (5, '2022-01-05 16:00:00', 125, '654 Main St'),
+            (6, '2022-01-06 17:00:00', 175, '987 Main St')
     ''')
 
     #order_items
     cursor.execute('''
-        INSERT INTO order_items (order_id, product_id, quantity,order_item_price)
-        VALUES
-            (1, 1, 1, 10),
-            (2, 2, 2, 10),
-            (3, 3, 3, 10),
-            (4, 4, 4, 10),
-            (5, 5, 5, 10),
-            (6, 6, 6, 10),
-            (7, 7, 7, 10),
-            (8, 8, 8, 10),
-            (9, 9, 9, 10),
-            (10, 10, 10, 10)
+        INSERT INTO products (name, price, description) VALUES
+            ('Blue T-Shirt', 20, 'This is a blue T-shirt'),
+            ('Red Dress', 50, 'This is a red dress'),
+            ('Black Jeans', 40, 'These are black jeans'),
+            ('White Shorts', 30, 'These are white shorts'),
+            ('Yellow Skirt', 25, 'This is a yellow skirt'),
+            ('Purple Blouse', 35, 'This is a purple blouse'),
+            ('Green Shirt', 45, 'This is a green shirt'),
+            ('Orange Sweater', 55, 'This is an orange sweater'),
+            ('Gray Coat', 75, 'This is a gray coat'),
+            ('Brown Jacket', 65, 'This is a brown jacket')
     ''')
 
     conn.commit()
