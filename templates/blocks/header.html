@@ -1,0 +1,17 @@
+{% block header %}
+    <form action="/create-tables" method="post">
+        <input type="submit" value="Create Tables">
+    </form>
+
+    <form action="/delete-tables" method="post">
+        <input type="submit" value="Delete Tables">
+    </form>
+
+    <form action="/insert-data" method="post">
+        <input type="submit" value="Insert Data">
+    </form>
+
+    <form action="/customers" method="get">
+        <input type="submit" value="Customers">
+    </form>
+{% endblock %}
