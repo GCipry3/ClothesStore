@@ -1,4 +1,9 @@
 {% block header %}
+<!--
+    <form action="/home" method="get" class="one_row_4_col">
+        <input type="submit" value="Home">
+    </form>
+
     <form action="/create-tables" method="post" class="one_row_4_col">
         <input type="submit" value="Create Tables">
     </form>
@@ -14,4 +19,60 @@
     <form action="/customers" method="get" class="one_row_4_col">
         <input type="submit" value="Customers">
     </form>
+-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 100%">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li>
+                        <form class="navbar-brand " action="/home" method = "get">
+                            <button type="submit" class="btn btn-outline-secondary">Home</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form class="navbar-brand" action="/customers" method="get">
+                            <button type="submit" class="btn btn-outline-secondary ml-3">Customers</button>
+                        </form>
+                    </li>
+
+                    <li>
+                        <form class="navbar-brand" action="/products" method="get">
+                            <button type="submit" class="btn btn-outline-secondary ml-3">Products</button>
+                        </form>
+                    </li>  
+
+
+                    <li>
+                        <form class="navbar-brand" action="/orders" method="get">
+                            <button type="submit" class="btn btn-outline-secondary ml-3">Orders</button>
+                        </form>
+                    </li>  
+
+                    <li class="dropdown">
+                        <button class="mt-1 btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Tables
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                                <form action="/create-tables" method="post" class="dropdown-item">
+                                    <button class="btn btn-light" type="submit">Create Tables</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/delete-tables" method="post" class="dropdown-item">
+                                    <button class="btn btn-light" type="submit">Delete Tables</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/insert-data" method="post" class="dropdown-item">
+                                    <button class="btn btn-light" type="submit">Insert Data</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>          
+                </ul>
+            </div>
+        </div>
+    </nav>
+      
 {% endblock %}

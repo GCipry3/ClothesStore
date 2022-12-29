@@ -1,18 +1,22 @@
 <html>
     <head>
         <title>Home</title>
-        <link rel="stylesheet" href="static/css/style.css">
+        {% include 'blocks/css_links.html' %}
     </head>
 
     <body>
         {% include 'blocks/header.html' %}
-        <h1>Home</h1>
-        <br><br>
 
-        {% if text != '' %}
-            <p>{{ text }}</p>
-        {% else %}
-            <p>There is no text to display.</p>
-        {% endif %}
+        <div class=".bg-light">
+            <h1>Welcome to our clothes store!</h1>
+            <br><br>
+
+            {% if text != '' %}
+                <p>{{ text }}</p>
+            {% else %}
+                <p>There is no text to display.</p>
+            {% endif %}
+        </div>
+        {% include 'blocks/js_src.html' %}
     </body>
 </html>

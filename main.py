@@ -3,8 +3,8 @@ from database_management import *
 
 app = Flask(__name__)
 
-
 @app.route('/')
+@app.route('/home')
 def home():
     return render_template('home.html')
 
@@ -40,9 +40,11 @@ def handle_get_customers():
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM customers")
-    customers = cursor.fetchall()
-
+    try:
+        cursor.execute("SELECT * FROM customers")
+        customers = cursor.fetchall()
+    except Exception as e:
+        return render_template('customers.html')
     return render_template('customers.html', customers=customers)
 
 
