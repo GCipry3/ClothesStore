@@ -11,20 +11,28 @@ def home():
 
 @app.route('/create-tables',methods=['POST'])
 def handle_create_tables():
-    create_tables()
-    return 'Tables created'
+    try:
+        create_tables()
+    except Exception as e:
+        return render_template('home.html',text='Tables already exist')
+    
+    return render_template('home.html',text='Tables created')
 
 
 @app.route('/insert-data',methods=['POST'])
 def handle_insert_data():
-    insert_data()
-    return 'Data inserted'
+    try:
+        insert_data()
+    except Exception as e:
+        return render_template('home.html',text='Tables do not exist')
+    
+    return render_template('home.html',text='Data inserted')
 
 
 @app.route('/delete-tables',methods=['POST'])
 def handle_delete_tables():
     delete_tables()
-    return 'Tables deleted'
+    return render_template('home.html',text='Tables deleted')
 
 
 @app.route('/customers')

@@ -1,12 +1,18 @@
 <html>
     <head>
         <title>Home</title>
+        <link rel="stylesheet" href="static/css/style.css">
     </head>
 
     <body>
-        <h1>Home</h1>
-        <p>Home page content</p>
         {% include 'blocks/header.html' %}
+        <h1>Home</h1>
+        <br><br>
 
+        {% if text != '' %}
+            <p>{{ text }}</p>
+        {% else %}
+            <p>There is no text to display.</p>
+        {% endif %}
     </body>
 </html>
