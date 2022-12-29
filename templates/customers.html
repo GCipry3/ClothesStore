@@ -6,66 +6,73 @@
 
     <body>
         {% include 'blocks/header.html' %}
-        <h1>Customers</h1>
-        <p>Customers page content</p>
 
+        <div class="container-fluid" style="height: 100%;width:100%">
+            <div class="text-center">
+                <h1>Customers</h1>
+            </div><br><br>
 
-        <form action="/add-customer" method="post">
-            <table>
-                <tr>
-                    <td><label for="name">Name</label></td>
-                    <td><input type="text" name="name" id="name"></td>
-                </tr>
-                <tr>
-                    <td><label for="email">Email</label></td>
-                    <td><input type="text" name="email" id="email"></td>
-                </tr>
-                <tr>
-                    <td><label for="billing_address">Billing Address</label></td>
-                    <td><input type="text" name="billing_address" id="billing_address"></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><button type="submit">Add Customer</button></td>
-                </tr>
-            </table>
-        </form><br><br><br>
+            <div class="row justify-content-center align-items-center" style="width:100%">
+                <div class="col-1" style="width:50%">
+                    <form action="/add-customer" method="post">
+                        <div class="input-group mb-3" style="width:80%">
+                            <span class="input-group-text" for="name" style="width:25%">Name</span>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="ex. Andrei Popescu" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3" style="width:80%">
+                            <span class="input-group-text" for="email" style="width:25%">Email</span>
+                            <input type="text" name="email" id="email" class="form-control" placeholder="ex. andrei.popescu@gmail.com" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3" style="width:80%">
+                            <span class="input-group-text" for="billing_address-addon2" style="width:25%">Billing Address</span>
+                            <input type="text" name="billing_address" id="billing_address" class="form-control" placeholder="ex. Iasi, Aleea Pacurari, nr 20, bloc B4, scara C, ap 15" aria-describedby="basic-addon1">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Customer</button>
+                    </form><br><br>
 
-        <form action="/remove-customer" method="post">
-            <label for="customer_id">Customer ID</label>
-            <input type="text" name="customer_id" id="customer_id"><br>
+                    <form action="/remove-customer" method="post">
+                        <div class="input-group mb-3" style="width:80%">
+                            <span class="input-group-text" for="customer_id" style="width:25%">Customer ID</span>
+                            <input type="text" name="customer_id" id="customer_id" class="form-control" placeholder="ex. 3" aria-describedby="basic-addon1">
+                        </div>
 
-            <button type="submit">Remove Customer</button>
-        </form><br><br><br>
+                        <button type="submit" class="btn btn-secondary">Remove Customer</button>
+                    </form><br><br><br>
 
-        <form action="/update-customer" method="post">
-            <label for="customer_id">Customer ID</label>
-            <input type="text" name="customer_id" id="customer_id"><br>
+                    <form action="/update-customer" method="post">
+                        <div class="input-group mb-3" style="width:80%">
+                            <span class="input-group-text" for="customer_id" style="width:25%">Customer ID</span>
+                            <input type="text" name="customer_id" id="customer_id" class="form-control" placeholder="ex. 3" aria-describedby="basic-addon1">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Update Customer</button>
+                    </form><br><br><br>
+                </div>
+                
+                <div class="col-1" style="width:50%">
+                    <table class="table table-hover" style="width: 80%">
+                        <thread>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Billing Address</th>
+                            </tr>
+                        </thread>
 
-            <button type="submit">Update Customer</button>
-        </form><br><br><br>
-        
-        <table border="1px">
-            <thread>
-                <tr>
-                    <th>Customer ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Billing Address</th>
-                </tr>
-            </thread>
-
-            <tbody>
-                {% for customer in customers %}
-                <tr>
-                    <td>{{ customer[0] }}</td>
-                    <td>{{ customer[1] }}</td>
-                    <td>{{ customer[2] }}</td>
-                    <td>{{ customer[3] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
+                        <tbody>
+                            {% for customer in customers %}
+                            <tr>
+                                <td>{{ customer[0] }}</td>
+                                <td>{{ customer[1] }}</td>
+                                <td>{{ customer[2] }}</td>
+                                <td>{{ customer[3] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         {% include 'blocks/js_src.html' %}
     </body>
 </html>
