@@ -23,16 +23,16 @@
                 <div class="col-1" style="width:50%">
                     <form action="/execute-add-order-items" method="post">
                         <div class="input-group mb-3 data_input_size">
-                            <span class="input-group-text" for="name" style="width:25%">Name</span>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="ex. Blugi">
+                            <span class="input-group-text" for="order_id" style="width:25%">Order ID</span>
+                            <input type="text" name="order_id" id="order_id" class="form-control" value="{{order_id}}" readonly>
                         </div>
                         <div class="input-group mb-3 data_input_size">
-                            <span class="input-group-text" for="price" style="width:25%">Price</span>
-                            <input type="text" name="price" id="price" class="form-control" placeholder="ex. 150 ron">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 3">
                         </div>
                         <div class="input-group mb-3 data_input_size">
-                            <span class="input-group-text" for="description" style="width:25%">Description</span>
-                            <input type="text" name="description" id="description" class="form-control" placeholder="ex. Blugi rupti adusi din Ucraina">
+                            <span class="input-group-text" for="quantity" style="width:25%">Quantity</span>
+                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="ex. 4">
                         </div>
                         <button type="submit" class="btn btn-secondary">Add Product</button>
                     </form><br>

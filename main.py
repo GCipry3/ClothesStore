@@ -165,11 +165,13 @@ def handle_add_product():
     name = request.form['name']
     price = request.form['price']
     description = request.form['description']
+    quantity = request.form['quantity']
 
     conn = connect_to_database()
     cursor = conn.cursor()
+    
+    cursor.execute("INSERT INTO products (name, price, description, quantity) VALUES (%s, %s, %s, %s)", (name, price, description, quantity))
 
-    cursor.execute("INSERT INTO products (name, price, description) VALUES (%s, %s, %s)", (name, price, description))
     conn.commit()
 
     return redirect('/products')
@@ -265,10 +267,11 @@ def handle_add_order():
 
     return redirect('/orders')
 
-@app.route('/add-order-items', methods=['POST'])
+
+@app.route('/open-basket', methods=['POST'])
 def handle_add_order_items():
     order_id = request.form['order_id']
-
+    
     conn = connect_to_database()
     cursor = conn.cursor()
 
@@ -279,7 +282,32 @@ def handle_add_order_items():
     products = [list(t) for t in cursor.fetchall()]
 
     for order_item in order_items:
+        order_item = list(order_item)
         cursor.execute(f"SELECT name FROM products WHERE product_id = {order_item[1]}")
         order_item.append(cursor.fetchone()[0])
 
     return render_template('basket.html', order_items=order_items, products=products, order_id=order_id)
+
+
+@app.route('/execute-add-order-items', methods=['POST'])
+def handle_execute_add_order_items():
+    order_id = request.form['order_id']
+    product_id = request.form['product_id']
+    quantity = int(request.form['quantity'])
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f'SELECT quantity FROM products WHERE product_id = {product_id}')
+    product_quantity = int(cursor.fetchone()[0])
+
+    if product_quantity < quantity:
+        return render_template('home.html',text='Not enough products in stock')
+
+    new_quantity = product_quantity-quantity
+    cursor.execute(f"UPDATE products SET quantity = {new_quantity} WHERE product_id = {product_id}")
+    cursor.execute(f"INSERT INTO order_items (order_id, product_id, quantity) VALUES ({order_id},{product_id},{quantity})")
+    
+    conn.commit()   
+
+    return redirect('/orders')

@@ -40,6 +40,7 @@ def create_tables():
             name VARCHAR(255) NOT NULL,
             price DECIMAL(10,2) NOT NULL,
             description TEXT NOT NULL,
+            quantity INT NOT NULL,
             constraint positive_price check (price > 0)
         )
     ''')
@@ -120,17 +121,17 @@ def insert_data():
     ''')
     #products
     cursor.execute('''
-        INSERT INTO products (name, price, description) VALUES
-            ('T-Shirt', 29, 'Short sleeve t-shirt'),
-            ('Dress', 79, 'Short sleeve dress'),
-            ('Jeans', 59, 'Blue jeans'),
-            ('Shorts', 39, 'Denim shorts'),
-            ('Skirt', 49, 'Midi length skirt'),
-            ('Blouse', 69, 'White blouse'),
-            ('Shirt', 59, 'Button-up shirt'),
-            ('Sweater', 79, 'Crew neck sweater'),
-            ('Coat', 99, 'Trench coat'),
-            ('Jacket', 79, 'Leather jacket')
+        INSERT INTO products (name, quantity,price, description) VALUES
+            ('T-Shirt',30, 29, 'Short sleeve t-shirt'),
+            ('Dress',30, 79, 'Short sleeve dress'),
+            ('Jeans',30, 59, 'Blue jeans'),
+            ('Shorts',30, 39, 'Denim shorts'),
+            ('Skirt',30, 49, 'Midi length skirt'),
+            ('Blouse',30, 69, 'White blouse'),
+            ('Shirt',30, 59, 'Button-up shirt'),
+            ('Sweater',30, 79, 'Crew neck sweater'),
+            ('Coat',30, 99, 'Trench coat'),
+            ('Jacket',30, 79, 'Leather jacket')
     ''')
 
     #categories
