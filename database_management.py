@@ -28,7 +28,8 @@ def create_tables():
             customer_id INT PRIMARY KEY AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
-            billing_address VARCHAR(255) NOT NULL
+            billing_address VARCHAR(255) NOT NULL,
+            constraint unique_email UNIQUE (email)
         )
     ''')
 
@@ -38,7 +39,8 @@ def create_tables():
             product_id INT PRIMARY KEY AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
             price DECIMAL(10,2) NOT NULL,
-            description TEXT NOT NULL
+            description TEXT NOT NULL,
+            constraint positive_price check (price > 0)
         )
     ''')
 
@@ -67,7 +69,6 @@ def create_tables():
             order_id INT PRIMARY KEY AUTO_INCREMENT,
             customer_id INT NOT NULL,
             order_date DATETIME NOT NULL,
-            total_price INT NOT NULL,
             shipping_address VARCHAR(255) NOT NULL,
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
         )
@@ -79,7 +80,6 @@ def create_tables():
             order_id INT NOT NULL,
             product_id INT NOT NULL,
             quantity INT NOT NULL,
-            order_item_price INT NOT NULL,
             PRIMARY KEY (order_id, product_id),
             FOREIGN KEY (order_id) REFERENCES orders(order_id),
             FOREIGN KEY (product_id) REFERENCES products(product_id)
@@ -144,37 +144,36 @@ def insert_data():
             ('Jackets')
     ''')
 
-    #product_categories
+    """#product_categories
     cursor.execute('''
         INSERT INTO product_categories (product_id, category_id)
         VALUES
-            (1, 1)
     ''')
-
+    """
     #orders
     cursor.execute('''
-        INSERT INTO orders (customer_id, order_date, total_price, shipping_address) VALUES 
-            (1, '2022-01-01 12:00:00', 100, '123 Main St'),
-            (2, '2022-01-02 13:00:00', 50, '456 Main St'),
-            (2, '2022-01-03 14:00:00', 75, '456 Main St'),
-            (4, '2022-01-04 15:00:00', 200, '321 Main St'),
-            (5, '2022-01-05 16:00:00', 125, '654 Main St'),
-            (6, '2022-01-06 17:00:00', 175, '987 Main St')
+        INSERT INTO orders (customer_id, order_date, shipping_address) VALUES 
+            (1, '2022-01-01 12:00:00', '123 Main St'),
+            (2, '2022-01-02 13:00:00', '456 Main St'),
+            (2, '2022-01-03 14:00:00', '456 Main St'),
+            (4, '2022-01-04 15:00:00', '321 Main St'),
+            (5, '2022-01-05 16:00:00', '654 Main St'),
+            (6, '2022-01-06 17:00:00', '987 Main St')
     ''')
 
-    #order_items
+    """#order_items
     cursor.execute('''
-        INSERT INTO products (name, price, description) VALUES
-            ('Blue T-Shirt', 20, 'This is a blue T-shirt'),
-            ('Red Dress', 50, 'This is a red dress'),
-            ('Black Jeans', 40, 'These are black jeans'),
-            ('White Shorts', 30, 'These are white shorts'),
-            ('Yellow Skirt', 25, 'This is a yellow skirt'),
-            ('Purple Blouse', 35, 'This is a purple blouse'),
-            ('Green Shirt', 45, 'This is a green shirt'),
-            ('Orange Sweater', 55, 'This is an orange sweater'),
-            ('Gray Coat', 75, 'This is a gray coat'),
-            ('Brown Jacket', 65, 'This is a brown jacket')
-    ''')
+        INSERT INTO order_items (name, description) VALUES
+            ('Blue T-Shirt', 'This is a blue T-shirt'),
+            ('Red Dress', 'This is a red dress'),
+            ('Black Jeans', 'These are black jeans'),
+            ('White Shorts', 'These are white shorts'),
+            ('Yellow Skirt', 'This is a yellow skirt'),
+            ('Purple Blouse', 'This is a purple blouse'),
+            ('Green Shirt', 'This is a green shirt'),
+            ('Orange Sweater', 'This is an orange sweater'),
+            ('Gray Coat', 'This is a gray coat'),
+            ('Brown Jacket', 'This is a brown jacket')
+    ''')"""
 
     conn.commit()

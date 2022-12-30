@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>Orders</title>
+        {% include 'blocks/css_links.html' %}
+    </head>
+
+    <body>
+        {% include 'blocks/header.html' %}
+
+        <div class="container-fluid bg" style="height: 100%;width:100%">
+            <div class="text-center">
+                <h1>Orders</h1>
+            </div><br><br>
+
+            <div class="row justify-content-center align-items-center" style="width:100%">
+                <div class="col-1" style="width:50%;">
+                    <table class="table table-hover" style="width: 100%">
+                        <thread>
+                            <tr style="font-size:20px;font-weight: bold;">
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Order Date </th>
+                                <th>Shipping Address</th>
+                                <!--<th>Total Price</th>-->
+                            </tr>
+                        </thread>
+
+                        <tbody>
+                            {% for order in orders %}
+                            <tr style="font-size:18px;font-weight: bold;color:dimgray">
+                                <td>{{ order[0] }}</td>
+                                <td>{{ order[1] }}</td>
+                                <td>{{ order[2] }}</td>
+                                <td>{{ order[3] }}</td>
+                                <!--<td>{{ order[4] }}</td>-->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-1" style="width:50%">
+                    <form action="/add-order" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="customer_id" style="width:25%">Customer ID</span>
+                            <input type="text" name="customer_id" id="customer_id" class="form-control" placeholder="ex. 3">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="order_date" style="width:25%">Order Date</span>
+                            <input type="text" name="order_date" id="order_date" class="form-control" placeholder="ex. 2022-01-01 12:00:00">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="shipping_address" style="width:25%">Shipping Address</span>
+                            <input type="text" name="shipping_address" id="shipping_address" class="form-control" placeholder="ex. Iasi">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Order</button>
+                    </form><br><br>
+                    
+                    <form action="/add-order-items" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="order_id" style="width:25%">Order ID</span>
+                            <input type="text" name="order_id" id="order_id" class="form-control" placeholder="ex. 2">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Open Basket</button>
+                    </form><br><br>
+
+                    
+                </div>
+            </div>
+        </div>
+        {% include 'blocks/js_src.html' %}
+    </body>
+</html>

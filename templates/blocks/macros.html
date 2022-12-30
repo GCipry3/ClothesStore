@@ -1,0 +1,72 @@
+{% macro products_table_with_categories(products) %}
+  <table class="table table-hover" style="width: 100%">
+      <thread>
+          <tr style="font-size:20px;font-weight: bold;">
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Categories</th>
+          </tr>
+      </thread>
+
+      <tbody>
+          {% for product in products %}
+          <tr style="font-size:18px;font-weight: bold;color:dimgray">
+              <td>{{ product[0] }}</td>
+              <td>{{ product[1] }}</td>
+              <td>{{ product[2] }}</td>
+              <td>{{ product[3] }}</td>
+              <td>{{ product[4] }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+{% endmacro %}
+
+{% macro products_table(products) %}
+  <table class="table table-hover" style="width: 100%">
+      <thread>
+          <tr style="font-size:20px;font-weight: bold;">
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Description</th>
+          </tr>
+      </thread>
+
+      <tbody>
+          {% for product in products %}
+          <tr style="font-size:18px;font-weight: bold;color:dimgray">
+              <td>{{ product[0] }}</td>
+              <td>{{ product[1] }}</td>
+              <td>{{ product[2] }}</td>
+              <td>{{ product[3] }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+{% endmacro %}
+
+{% macro my_basket(order_items) %}
+  <table class="table table-hover" style="width: 100%">
+      <thread>
+          <tr style="font-size:20px;font-weight: bold;">
+              <th>Product ID</th>
+              <th>Quantity</th>
+              <th>Name</th>
+          </tr>
+      </thread>
+
+      <tbody>
+          {% for order_item in order_items %}
+          <tr style="font-size:18px;font-weight: bold;color:dimgray">
+              <td>{{ product[0] }}</td>
+              <td>{{ product[1] }}</td>
+              <td>{{ product[2] }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+{% endmacro %}
+

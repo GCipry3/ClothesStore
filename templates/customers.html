@@ -52,6 +52,9 @@
                             <input type="text" name="billing_address" id="billing_address" class="form-control" placeholder="ex. Iasi, Aleea Pacurari, nr 20, bloc B4, scara C, ap 15">
                         </div>
                         <button type="submit" class="btn btn-secondary">Add Customer</button>
+                        {% if text != '' %}
+                            <p>{{ text }}</p>
+                        {% endif %}
                     </form><br><br>
 
                     <form action="/remove-customer" method="post">

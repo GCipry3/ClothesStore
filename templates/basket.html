@@ -1,0 +1,60 @@
+{% import "blocks/macros.html" as macros %}
+
+<html>
+    <head>
+        <title>Basket</title>
+        {% include 'blocks/css_links.html' %}
+    </head>
+
+    <body>
+        {% include 'blocks/header.html' %}
+
+        <div class="container-fluid bg" style="height: 100%;width:100%">
+            <div class="text-center">
+                <h1>Basket</h1>
+            </div><br><br>
+
+            <div class="row justify-content-center align-items-center" style="width:100%">
+                <div class="col-1" style="width:50%;">
+                    {{ macros.products_table(products) }}
+                    {{ macros.my_basket(order_items) }}
+                </div>
+
+                <div class="col-1" style="width:50%">
+                    <form action="/execute-add-order-items" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="name" style="width:25%">Name</span>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="ex. Blugi">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="price" style="width:25%">Price</span>
+                            <input type="text" name="price" id="price" class="form-control" placeholder="ex. 150 ron">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="description" style="width:25%">Description</span>
+                            <input type="text" name="description" id="description" class="form-control" placeholder="ex. Blugi rupti adusi din Ucraina">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Product</button>
+                    </form><br>
+
+                    <form action="/remove-order-item" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Remove Product</button>
+                    </form><br><br>
+
+                    <form action="/update-order-item" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Update Quantity</button>
+                    </form><br><br>
+                </div>
+            </div>
+        </div>
+        {% include 'blocks/js_src.html' %}
+    </body>
+</html>

@@ -21,10 +21,10 @@ def handle_create_tables():
 
 @app.route('/insert-data',methods=['POST'])
 def handle_insert_data():
-    try:
-        insert_data()
-    except Exception as e:
-        return render_template('home.html',text='Tables do not exist')
+    #try:
+    insert_data()
+    #except Exception as e:
+    #    return render_template('home.html',text=f'Tables do not exist:{e}')
     
     return render_template('home.html',text='Data inserted')
 
@@ -56,8 +56,25 @@ def handle_add_customer():
 
     conn = connect_to_database()
     cursor = conn.cursor()
+    
+    '''
+    cursor.execute("""
+        select '{email}' from DUAL 
+        where '{email}' like '%@%'
+    """
+    )
+    email_exists = cursor.fetchone()
+    if f'{email_exists}' != 'None':
+        cursor.execute("INSERT INTO customers (name, email, billing_address) VALUES (%s, %s, %s)", (name, email, billing_address))
+    else:
+        return render_template ('home.html',text=f'Invalid email: {email}')
+    '''
 
-    cursor.execute("INSERT INTO customers (name, email, billing_address) VALUES (%s, %s, %s)", (name, email, billing_address))
+    if email.count('@') == 1:
+        cursor.execute("INSERT INTO customers (name, email, billing_address) VALUES (%s, %s, %s)", (name, email, billing_address))
+    else:
+        return render_template ('home.html',text=f'Invalid email: {email}')
+
     conn.commit()
 
     return redirect('/customers')
@@ -223,3 +240,46 @@ def handle_add_product_category():
     conn.commit()
 
     return redirect('/products')
+
+@app.route('/orders', methods=['GET'])
+def handle_get_orders():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM orders")
+    orders = cursor.fetchall()
+
+    return render_template('orders.html', orders=orders )
+
+@app.route('/add-order', methods=['POST'])
+def handle_add_order():
+    customer_id = request.form['customer_id']
+    order_date = request.form['order_date']
+    shipping_address = request.form['shipping_address']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO orders (customer_id, order_date, shipping_address) VALUES (%s, %s, %s)", (customer_id, order_date, shipping_address))
+    conn.commit()
+
+    return redirect('/orders')
+
+@app.route('/add-order-items', methods=['POST'])
+def handle_add_order_items():
+    order_id = request.form['order_id']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"SELECT * FROM order_items WHERE order_id = {order_id}")
+    order_items = cursor.fetchall()
+
+    cursor.execute(f"SELECT * FROM products")
+    products = [list(t) for t in cursor.fetchall()]
+
+    for order_item in order_items:
+        cursor.execute(f"SELECT name FROM products WHERE product_id = {order_item[1]}")
+        order_item.append(cursor.fetchone()[0])
+
+    return render_template('basket.html', order_items=order_items, products=products, order_id=order_id)
