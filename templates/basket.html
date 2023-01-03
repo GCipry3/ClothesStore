@@ -39,16 +39,28 @@
 
                     <form action="/remove-order-item" method="post">
                         <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="order_id" style="width:25%">Order ID</span>
+                            <input type="text" name="order_id" id="order_id" class="form-control" value="{{order_id}}" readonly>
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
                             <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
                             <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
                         </div>
-                        <button type="submit" class="btn btn-secondary">Remove Product</button>
+                        <button type="submit" class="btn btn-secondary">Remove Product From Basket</button>
                     </form><br><br>
 
                     <form action="/update-order-item" method="post">
                         <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="order_id" style="width:25%">Order ID</span>
+                            <input type="text" name="order_id" id="order_id" class="form-control" value="{{order_id}}" readonly>
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
                             <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
                             <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="quantity" style="width:25%">Quantity</span>
+                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="ex. 4">
                         </div>
                         <button type="submit" class="btn btn-secondary">Update Quantity</button>
                     </form><br><br>

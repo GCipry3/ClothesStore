@@ -86,7 +86,9 @@ def create_tables():
             FOREIGN KEY (product_id) REFERENCES products(product_id)
         )
     ''')
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
 def delete_tables():
     conn = connect_to_database()
@@ -102,7 +104,9 @@ def delete_tables():
         cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
         
     cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
 
 def insert_data():
@@ -173,5 +177,51 @@ def insert_data():
             (6, '2022-01-06 17:00:00', 'Bucuresti, Strada Ion Creanga, nr 2')
     ''')
 
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
+
+def add_order_items(order_id, product_id, quantity):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        BEGIN
+    """)
+
+    cursor.execute(f"""
+        INSERT INTO order_items (order_id, product_id, quantity)
+            SELECT {order_id}, {product_id}, {quantity}
+            FROM dual
+            WHERE {quantity} <= (SELECT quantity FROM products WHERE product_id = {product_id})
+    """)
+
+    cursor.execute(f"""
+        UPDATE products
+            JOIN order_items ON order_items.product_id = products.product_id
+            SET products.quantity = products.quantity - order_items.quantity
+            WHERE products.product_id = {product_id} AND order_items.order_id = {order_id} AND order_items.product_id = {product_id}
+    """)
+    
+    cursor.execute("""
+        COMMIT
+    """)
+
+def delete_order_items(order_id, product_id):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"SELECT quantity FROM order_items WHERE product_id = {product_id} and order_id = {order_id}")
+    quantity = cursor.fetchone()[0]
+
+    cursor.execute(f"SELECT quantity FROM products WHERE product_id = {product_id}")
+    product_quantity = cursor.fetchone()[0]
+
+    cursor.execute(f"UPDATE products SET quantity = {product_quantity + quantity} WHERE product_id = {product_id}")
+
+    cursor.execute(f"DELETE FROM order_items WHERE product_id = {product_id} and order_id = {order_id}")
+    
+    cursor.execute("""
+        COMMIT
+    """)

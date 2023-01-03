@@ -303,19 +303,27 @@ def handle_execute_add_order_items():
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
 
-    conn = connect_to_database()
-    cursor = conn.cursor()
+    add_order_items(order_id=order_id, product_id=product_id, quantity=quantity)
 
-    cursor.execute(f'SELECT quantity FROM products WHERE product_id = {product_id}')
-    product_quantity = int(cursor.fetchone()[0])
+    return redirect('/orders')
 
-    if product_quantity < quantity:
-        return render_template('home.html',text='Not enough products in stock')
+@app.route('/remove-order-item', methods=['POST'])
+def handle_remove_order_item():
+    product_id = request.form['product_id']
+    order_id = request.form['order_id']
 
-    new_quantity = product_quantity-quantity
-    cursor.execute(f"UPDATE products SET quantity = {new_quantity} WHERE product_id = {product_id}")
-    cursor.execute(f"INSERT INTO order_items (order_id, product_id, quantity) VALUES ({order_id},{product_id},{quantity})")
-    
-    conn.commit()   
+    delete_order_items(order_id=order_id, product_id=product_id)
+
+    return redirect('/orders')
+
+
+@app.route('/update-order-item', methods=['POST'])
+def handle_update_order_item():
+    product_id = request.form['product_id']
+    order_id = request.form['order_id']
+    quantity = request.form['quantity']
+
+    delete_order_items(order_id=order_id, product_id=product_id)
+    add_order_items(order_id=order_id, product_id=product_id, quantity=quantity)
 
     return redirect('/orders')
