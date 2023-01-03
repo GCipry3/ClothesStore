@@ -216,3 +216,17 @@ def delete_order_items(order_id, product_id):
     
     cursor.execute("COMMIT")
 
+def delete_order(order_id):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"SELECT product_id FROM order_items WHERE order_id = {order_id}")
+    products = cursor.fetchall()
+
+    for product in products:
+        product_id = product[0]
+        delete_order_items(order_id, product_id)
+
+    cursor.execute(f"DELETE FROM orders WHERE order_id = {order_id}")
+    
+    cursor.execute("COMMIT")

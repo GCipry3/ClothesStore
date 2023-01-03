@@ -242,6 +242,7 @@ def handle_get_orders():
     try:
         cursor.execute("SELECT * FROM orders")
         orders = cursor.fetchall()
+
     except Exception as e:
         return render_template('orders.html')
 
@@ -283,8 +284,11 @@ def handle_add_order_items():
         order_item = list(order_item)
         cursor.execute(f"SELECT name FROM products WHERE product_id = {order_item[1]}")
         order_item.append(cursor.fetchone()[0])
+    
+    cursor.execute(f"SELECT SUM(p.price * o.quantity) FROM order_items o, products p WHERE o.order_id = {order_id} AND o.product_id = p.product_id")
+    total = cursor.fetchone()[0]
 
-    return render_template('basket.html', order_items=order_items, products=products, order_id=order_id)
+    return render_template('basket.html', order_items=order_items, products=products, order_id=order_id,total=total)
 
 
 @app.route('/execute-add-order-items', methods=['POST'])
@@ -296,6 +300,7 @@ def handle_execute_add_order_items():
     add_order_items(order_id=order_id, product_id=product_id, quantity=quantity)
 
     return redirect('/orders')
+
 
 @app.route('/remove-order-item', methods=['POST'])
 def handle_remove_order_item():
@@ -315,5 +320,16 @@ def handle_update_order_item():
 
     delete_order_items(order_id=order_id, product_id=product_id)
     add_order_items(order_id=order_id, product_id=product_id, quantity=quantity)
+
+    return redirect('/orders')
+
+@app.route('/remove-order', methods=['POST'])
+def handle_remove_order():
+    order_id = request.form['order_id']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    delete_order(order_id=order_id)
 
     return redirect('/orders')

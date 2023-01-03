@@ -63,7 +63,14 @@
                         </div>
                         <button type="submit" class="btn btn-secondary">Open Basket</button>
                     </form><br><br>
-
+                    
+                    <form action="/remove-order" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="order_id" style="width:25%">Order ID</span>
+                            <input type="text" name="order_id" id="order_id" class="form-control" placeholder="ex. 1">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Cancel Order</button>
+                    </form><br><br>
                     
                 </div>
             </div>
