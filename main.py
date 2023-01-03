@@ -70,9 +70,7 @@ def handle_add_customer():
     else:
         return render_template ('home.html',text=f'Invalid email: {email}')
 
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/customers')
 
@@ -85,9 +83,7 @@ def handle_remove_customer():
     cursor = conn.cursor()
 
     cursor.execute(f"DELETE FROM customers WHERE customer_id = {customer_id}")
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/customers')
 
@@ -120,9 +116,7 @@ def handle_execute_update_customer():
     else:
         return render_template ('home.html',text=f'Invalid email: {email}')
 
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/customers')
 
@@ -168,9 +162,7 @@ def handle_add_product():
     
     cursor.execute("INSERT INTO products (name, price, description, quantity) VALUES (%s, %s, %s, %s)", (name, price, description, quantity))
 
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/products')
 
@@ -182,10 +174,10 @@ def handle_remove_product():
     conn = connect_to_database()
     cursor = conn.cursor()
 
+    cursor.execute(f"DELETE FROM product_categories WHERE product_id = {product_id}")
     cursor.execute(f"DELETE FROM products WHERE product_id = {product_id}")
-    cursor.execute("""
-        COMMIT
-    """)
+
+    cursor.execute("COMMIT")
 
     return redirect('/products')
 
@@ -214,9 +206,7 @@ def handle_execute_update_product():
     cursor = conn.cursor()
 
     cursor.execute(f"UPDATE products SET name = '{name}', price = '{price}', description = '{description}' WHERE product_id = {product_id}")
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/products') 
 
@@ -228,9 +218,7 @@ def handle_add_category():
     cursor = conn.cursor()
 
     cursor.execute(f"INSERT INTO categories (name) VALUES ('{name}')")
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/products')
 
@@ -243,9 +231,7 @@ def handle_add_product_category():
     cursor = conn.cursor()
 
     cursor.execute(f"INSERT INTO product_categories (product_id, category_id) VALUES ({product_id}, {category_id})")
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/products')
 
@@ -271,9 +257,7 @@ def handle_add_order():
     cursor = conn.cursor()
 
     cursor.execute("INSERT INTO orders (customer_id, order_date, shipping_address) VALUES (%s, %s, %s)", (customer_id, order_date, shipping_address))
-    cursor.execute("""
-        COMMIT
-    """)
+    cursor.execute("COMMIT")
 
     return redirect('/orders')
 
