@@ -195,10 +195,12 @@ def add_order_items(order_id, product_id, quantity):
         UPDATE products
             JOIN order_items ON order_items.product_id = products.product_id
             SET products.quantity = products.quantity - order_items.quantity
-            WHERE products.product_id = {product_id} AND order_items.order_id = {order_id} AND order_items.product_id = {product_id}
+            WHERE products.product_id = {product_id} AND order_items.order_id = {order_id} AND order_items.product_id = {product_id} and
+                products.quantity >= order_items.quantity
     """)
     
     cursor.execute("COMMIT")
+
 
 def delete_order_items(order_id, product_id):
     conn = connect_to_database()
@@ -211,10 +213,11 @@ def delete_order_items(order_id, product_id):
     product_quantity = cursor.fetchone()[0]
 
     cursor.execute(f"UPDATE products SET quantity = {product_quantity + quantity} WHERE product_id = {product_id}")
-
     cursor.execute(f"DELETE FROM order_items WHERE product_id = {product_id} and order_id = {order_id}")
     
     cursor.execute("COMMIT")
+
+
 
 def delete_order(order_id):
     conn = connect_to_database()

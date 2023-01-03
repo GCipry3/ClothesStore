@@ -280,10 +280,10 @@ def handle_add_order_items():
     cursor.execute(f"SELECT * FROM products")
     products = [list(t) for t in cursor.fetchall()]
 
-    for order_item in order_items:
+    """for order_item in order_items:
         order_item = list(order_item)
         cursor.execute(f"SELECT name FROM products WHERE product_id = {order_item[1]}")
-        order_item.append(cursor.fetchone()[0])
+        order_item.append(cursor.fetchone()[0])"""
     
     cursor.execute(f"SELECT SUM(p.price * o.quantity) FROM order_items o, products p WHERE o.order_id = {order_id} AND o.product_id = p.product_id")
     total = cursor.fetchone()[0]
