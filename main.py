@@ -21,12 +21,20 @@ def handle_create_tables():
 
 @app.route('/insert-data',methods=['POST'])
 def handle_insert_data():
-    #try:
-    insert_data()
-    #except Exception as e:
-    #    return render_template('home.html',text=f'Tables do not exist:{e}')
+    try:
+        insert_data()
+    except Exception as e:
+        return render_template('home.html',text=f'Tables do not exist or Data already inserted ! Exception :{e}')
     
     return render_template('home.html',text='Data inserted')
+
+
+@app.route('/delete-data',methods=['POST'])
+def handle_delete_data():
+    delete_tables()
+    create_tables()
+    
+    return render_template('home.html',text='Data deleted')
 
 
 @app.route('/delete-tables',methods=['POST'])

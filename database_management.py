@@ -112,13 +112,14 @@ def insert_data():
     #customers
     cursor.execute('''
         INSERT INTO customers (name, email, billing_address) VALUES 
-            ('John Smith', 'john@example.com', '123 Main St'), 
-            ('Jane Doe', 'jane@example.com', '456 Main St'), 
-            ('Bob Johnson', 'bob@example.com', '789 Main St'),
-            ('Samantha Williams', 'samantha@example.com', '321 Oak Avenue'),
-            ('Emily Thompson', 'emily@example.com', '753 Pine Avenue'),
-            ('Kimberly Kim', 'kimberly@example.com', '369 Birch Road')
+            ('John Smith', 'john@example.com', 'Iasi, Aleea Pacurari, nr 10'), 
+            ('Jane Doe', 'jane@example.com', 'Iasi, Miroslava, Strada Florilor , nr 25'), 
+            ('Bob Johnson', 'bob@example.com', 'Timisoara, Strada Mihai Eminescu, nr 10'),
+            ('Samantha Williams', 'samantha@example.com', 'Bucuresti, Strada Ion Creanga, nr 21'),
+            ('Emily Thompson', 'emily@example.com', 'Cluj-Napoca, Strada Alexandru Vaida Voievod, nr 11'),
+            ('Kimberly Kim', 'kimberly@example.com', 'Bucuresti, Strada Ion Creanga, nr 2')
     ''')
+
     #products
     cursor.execute('''
         INSERT INTO products (name, quantity,price, description) VALUES
@@ -145,36 +146,32 @@ def insert_data():
             ('Jackets')
     ''')
 
-    """#product_categories
+    #product_categories
     cursor.execute('''
-        INSERT INTO product_categories (product_id, category_id)
-        VALUES
+        INSERT INTO product_categories (product_id, category_id) VALUES
+            (1,1),
+            (2,2),
+            (3,3),
+            (4,4),
+            (5,2),
+            (6,2),
+            (7,1),
+            (8,1),
+            (9,5),
+            (9,6),
+            (10,6)
     ''')
-    """
+
     #orders
     cursor.execute('''
         INSERT INTO orders (customer_id, order_date, shipping_address) VALUES 
-            (1, '2022-01-01 12:00:00', '123 Main St'),
-            (2, '2022-01-02 13:00:00', '456 Main St'),
-            (2, '2022-01-03 14:00:00', '456 Main St'),
-            (4, '2022-01-04 15:00:00', '321 Main St'),
-            (5, '2022-01-05 16:00:00', '654 Main St'),
-            (6, '2022-01-06 17:00:00', '987 Main St')
+            (1, '2022-01-01 12:00:00', 'Iasi , Aleeaa Pacurari, nr 10'),
+            (2, '2022-01-02 13:00:00', 'Iasi, Miroslava, Strada Florilor , nr 25'),
+            (2, '2022-01-03 14:00:00', 'Timisoara, Strada Mihai Eminescu, nr 10'),
+            (4, '2022-01-04 15:00:00', 'Bucuresti, Strada Vasile Alecsandri, nr 25'),
+            (5, '2022-01-05 16:00:00', 'Cluj-Napoca, Strada Alexandru Vaida Voievod, nr 11'),
+            (6, '2022-01-06 17:00:00', 'Bucuresti, Strada Ion Creanga, nr 2')
     ''')
 
-    """#order_items
-    cursor.execute('''
-        INSERT INTO order_items (name, description) VALUES
-            ('Blue T-Shirt', 'This is a blue T-shirt'),
-            ('Red Dress', 'This is a red dress'),
-            ('Black Jeans', 'These are black jeans'),
-            ('White Shorts', 'These are white shorts'),
-            ('Yellow Skirt', 'This is a yellow skirt'),
-            ('Purple Blouse', 'This is a purple blouse'),
-            ('Green Shirt', 'This is a green shirt'),
-            ('Orange Sweater', 'This is an orange sweater'),
-            ('Gray Coat', 'This is a gray coat'),
-            ('Brown Jacket', 'This is a brown jacket')
-    ''')"""
-
     conn.commit()
+
