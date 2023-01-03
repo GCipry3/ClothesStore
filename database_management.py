@@ -225,3 +225,4 @@ def delete_order_items(order_id, product_id):
     cursor.execute("""
         COMMIT
     """)
+

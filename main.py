@@ -65,25 +65,14 @@ def handle_add_customer():
     conn = connect_to_database()
     cursor = conn.cursor()
     
-    '''
-    cursor.execute("""
-        select '{email}' from DUAL 
-        where '{email}' like '%@%'
-    """
-    )
-    email_exists = cursor.fetchone()
-    if f'{email_exists}' != 'None':
-        cursor.execute("INSERT INTO customers (name, email, billing_address) VALUES (%s, %s, %s)", (name, email, billing_address))
-    else:
-        return render_template ('home.html',text=f'Invalid email: {email}')
-    '''
-
     if email.count('@') == 1:
         cursor.execute("INSERT INTO customers (name, email, billing_address) VALUES (%s, %s, %s)", (name, email, billing_address))
     else:
         return render_template ('home.html',text=f'Invalid email: {email}')
 
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/customers')
 
@@ -96,7 +85,9 @@ def handle_remove_customer():
     cursor = conn.cursor()
 
     cursor.execute(f"DELETE FROM customers WHERE customer_id = {customer_id}")
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/customers')
 
@@ -124,8 +115,14 @@ def handle_execute_update_customer():
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    cursor.execute(f"UPDATE customers SET name = '{name}', email = '{email}', billing_address = '{billing_address}' WHERE customer_id = {customer_id}")
-    conn.commit()
+    if email.count('@') == 1:
+        cursor.execute(f"UPDATE customers SET name = '{name}', email = '{email}', billing_address = '{billing_address}' WHERE customer_id = {customer_id}")
+    else:
+        return render_template ('home.html',text=f'Invalid email: {email}')
+
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/customers')
 
@@ -137,36 +134,27 @@ def handle_get_products():
     cursor = conn.cursor()
 
     try:
-        cursor.execute("SELECT * FROM products")
-        products = [list(t) for t in cursor.fetchall()]
+        cursor.execute("""
+            SELECT p.product_id AS id, p.name,p.price,p.description,p.quantity,
+                (
+                    SELECT GROUP_CONCAT(c.name SEPARATOR ',')
+                    FROM categories c
+                    WHERE c.category_id IN (
+                        SELECT pc.category_id
+                        FROM product_categories pc
+                        WHERE pc.product_id = p.product_id
+                    )
+                ) AS categories
+            FROM products p
+        """)
+        products_with_categories = cursor.fetchall()
 
-        #add categories to products
-        for product in products:
-            cursor.execute(f"SELECT category_id from product_categories WHERE product_id = {product[0]}")
-            all_categories = cursor.fetchall()
-            categories=""
-
-            for category in all_categories:
-                cursor.execute(f"SELECT name from categories WHERE category_id = {category[0]}")
-                categories += "".join(cursor.fetchone()) + ", "
-            
-            categories = categories[:-2]
-
-            if categories == "":
-                categories = "No categories"
-
-            product.append(categories)
-
-    except Exception as e:
-        return render_template('products.html')
-
-    try:
         cursor.execute("SELECT * FROM categories")
         categories = cursor.fetchall()
     except Exception as e:
-        return render_template('products.html', products=products)
+        return render_template('products.html')
 
-    return render_template('products.html', products=products , categories=categories)
+    return render_template('products.html', products=products_with_categories , categories=categories)
 
 @app.route('/add-product', methods=['POST'])
 def handle_add_product():
@@ -180,7 +168,9 @@ def handle_add_product():
     
     cursor.execute("INSERT INTO products (name, price, description, quantity) VALUES (%s, %s, %s, %s)", (name, price, description, quantity))
 
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/products')
 
@@ -193,7 +183,9 @@ def handle_remove_product():
     cursor = conn.cursor()
 
     cursor.execute(f"DELETE FROM products WHERE product_id = {product_id}")
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/products')
 
@@ -222,7 +214,9 @@ def handle_execute_update_product():
     cursor = conn.cursor()
 
     cursor.execute(f"UPDATE products SET name = '{name}', price = '{price}', description = '{description}' WHERE product_id = {product_id}")
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/products') 
 
@@ -234,7 +228,9 @@ def handle_add_category():
     cursor = conn.cursor()
 
     cursor.execute(f"INSERT INTO categories (name) VALUES ('{name}')")
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/products')
 
@@ -247,7 +243,9 @@ def handle_add_product_category():
     cursor = conn.cursor()
 
     cursor.execute(f"INSERT INTO product_categories (product_id, category_id) VALUES ({product_id}, {category_id})")
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/products')
 
@@ -255,9 +253,11 @@ def handle_add_product_category():
 def handle_get_orders():
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM orders")
-    orders = cursor.fetchall()
+    try:
+        cursor.execute("SELECT * FROM orders")
+        orders = cursor.fetchall()
+    except Exception as e:
+        return render_template('orders.html')
 
     return render_template('orders.html', orders=orders )
 
@@ -271,7 +271,9 @@ def handle_add_order():
     cursor = conn.cursor()
 
     cursor.execute("INSERT INTO orders (customer_id, order_date, shipping_address) VALUES (%s, %s, %s)", (customer_id, order_date, shipping_address))
-    conn.commit()
+    cursor.execute("""
+        COMMIT
+    """)
 
     return redirect('/orders')
 
@@ -279,11 +281,15 @@ def handle_add_order():
 @app.route('/open-basket', methods=['POST'])
 def handle_add_order_items():
     order_id = request.form['order_id']
-    
+
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    cursor.execute(f"SELECT * FROM order_items WHERE order_id = {order_id}")
+    cursor.execute(f"SELECT 'True' FROM orders WHERE order_id = {order_id}")
+    if cursor.fetchone() is None:
+        return render_template('home.html', text = "Order does not exist")
+
+    cursor.execute(f"SELECT o.order_id,o.product_id,o.quantity,p.name FROM order_items o,products p WHERE o.order_id = {order_id} AND o.product_id = p.product_id")
     order_items = cursor.fetchall()
 
     cursor.execute(f"SELECT * FROM products")
