@@ -15,6 +15,8 @@ and __JavaScript__ is used to add interactivity and functionality to the page.
 __Flask__ is a micro web framework written in Python that provides useful tools and features for building web applications. 
 It includes a __lightweight server__ and the ability to connect to a database, among other things. 
 
-Jinja2 is a templating engine for Python that allows developers to generate HTML or other markup code from templates and data. 
-It allows you to insert dynamic content into a template and keep the presentation separate from the application logic.
+__Jinja2__ is a templating engine for Python that allows developers to generate HTML or other markup code from templates and data. 
+It allows you to __insert dynamic content into a template__ and keep the presentation separate from the application logic.
 
+##How to navigate through the website
+###
