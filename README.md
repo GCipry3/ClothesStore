@@ -18,5 +18,55 @@ It includes a __lightweight server__ and the ability to connect to a database, a
 __Jinja2__ is a templating engine for Python that allows developers to generate HTML or other markup code from templates and data. 
 It allows you to __insert dynamic content into a template__ and keep the presentation separate from the application logic.
 
-##How to navigate through the website
-###
+
+## Database Design
+![Database](https://github.com/GCipry3/ClothesStore/blob/main/docs/database.png)
+
+
+## How to navigate through the website
+### 1.To reset the database to the default setup, go to the header and select __Delete Tables__
+![Header](https://github.com/GCipry3/ClothesStore/blob/main/docs/header.png)
+
+### 2.Then we have to create the tables also from the header
+
+### 3.We have to create a new customer
+* To do that we must go to our customers page
+* The customer page allows us to create, view, and update customer information in the database
+* Then we can easily create a __new customer__ from the top right form
+![Customers](https://github.com/GCipry3/ClothesStore/blob/main/docs/customers_page.png)
+* If we want to make any chamges to any customer we can do that by typing the customer id in the __Update Customer__ form
+
+### 4.Add Some Products into the database
+* To perform this we must go into our products page
+* There we can find an __Add Product__ form in the top right
+![Products](https://github.com/GCipry3/ClothesStore/blob/main/docs/products_page.png)
+
+### 5.The last step is to place an order
+* We have to navigate to the __Orders__ page
+* The orders page allows us to create, view, and update orders and the products in each order
+![Orders](https://github.com/GCipry3/ClothesStore/blob/main/docs/orders_page.png)
+* After that we can enter into the __Basket__ of that order from the basket form
+![Basket](https://github.com/GCipry3/ClothesStore/blob/main/docs/basket_page.png)
+* Here we can add ,remove or update existing products in the basket
+
+
+## The website allows us to insert some default data or to delete the existing data
+* To perform this we can enter into the __Tables__ dropdown list from the header and press __Insert Data__ or __Delete Data__
+![Header](https://github.com/GCipry3/ClothesStore/blob/main/docs/header.png)
+
+
+
+## How to start the project
+* We utilized a Python virtual environment for this project to keep the dependencies for this project separate from the rest of the computer
+
+### __To set up the project, follow these steps:__
+
+1.Set up an Ubuntu distribution.
+
+2.Activate the virtual environment by running source "__.venv/bin/activate__".
+
+3.Install the project dependencies by running "__pip install -r requirements.txt__".
+
+4.Set the FLASK_APP environment variable to main by running export "__FLASK_APP=main__".
+
+5.Start the server by running "__flask run__".
