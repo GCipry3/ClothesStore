@@ -240,7 +240,13 @@ def handle_get_orders():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM orders")
+        cursor.execute("""
+            SELECT o.order_id, o.customer_id, o.order_date, o.shipping_address, SUM(oi.quantity * p.price)
+            FROM orders o
+            LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            LEFT JOIN products p ON oi.product_id = p.product_id
+            GROUP BY o.order_id
+        """)
         orders = cursor.fetchall()
 
     except Exception as e:
