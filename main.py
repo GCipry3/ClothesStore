@@ -65,10 +65,10 @@ def handle_add_customer():
     conn = connect_to_database()
     cursor = conn.cursor()
     
-    if email.count('@') == 1:
+    try:
         cursor.execute("INSERT INTO customers (name, email, billing_address) VALUES (%s, %s, %s)", (name, email, billing_address))
-    else:
-        return render_template ('home.html',text=f'Invalid email: {email}')
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Insert , Exception :{e}')
 
     cursor.execute("COMMIT")
 
@@ -81,8 +81,10 @@ def handle_remove_customer():
 
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    cursor.execute(f"DELETE FROM customers WHERE customer_id = {customer_id}")
+    try:
+        cursor.execute(f"DELETE FROM customers WHERE customer_id = {customer_id}")
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Delete: {customer_id} , Exception :{e}')
     cursor.execute("COMMIT")
 
     return redirect('/customers')
@@ -95,6 +97,10 @@ def handle_default_update_customer():
     conn = connect_to_database()
     cursor = conn.cursor()
 
+    cursor.execute(f"SELECT True FROM customers WHERE customer_id = {customer_id}")
+    if cursor.fetchone() is None:
+        return render_template ('home.html',text=f'Invalid Customer ID: {customer_id}')
+    
     cursor.execute(f"SELECT * FROM customers WHERE customer_id = {customer_id}")
     customer = cursor.fetchone()
 
@@ -111,10 +117,10 @@ def handle_execute_update_customer():
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    if email.count('@') == 1:
+    try:
         cursor.execute(f"UPDATE customers SET name = '{name}', email = '{email}', billing_address = '{billing_address}' WHERE customer_id = {customer_id}")
-    else:
-        return render_template ('home.html',text=f'Invalid email: {email}')
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Update: {customer_id} , Exception :{e}')
 
     cursor.execute("COMMIT")
 

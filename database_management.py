@@ -29,6 +29,8 @@ def create_tables():
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             billing_address VARCHAR(255) NOT NULL,
+            CHECK ( email REGEXP '[a-z0-9._%-]+@[a-z0-9._%-]+\.[a-z]{2,4}' ),
+            CHECK ( LENGTH(name) >= 2 AND name REGEXP '^[a-zA-Z ]*$' ),
             constraint unique_email UNIQUE (email)
         )
     ''')
@@ -88,6 +90,7 @@ def create_tables():
     ''')
     cursor.execute("COMMIT")
 
+
 def delete_tables():
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -112,27 +115,35 @@ def insert_data():
     #customers
     cursor.execute('''
         INSERT INTO customers (name, email, billing_address) VALUES 
-            ('John Smith', 'john@example.com', 'Iasi, Aleea Pacurari, nr 10'), 
-            ('Jane Doe', 'jane@example.com', 'Iasi, Miroslava, Strada Florilor , nr 25'), 
-            ('Bob Johnson', 'bob@example.com', 'Timisoara, Strada Mihai Eminescu, nr 10'),
-            ('Samantha Williams', 'samantha@example.com', 'Bucuresti, Strada Ion Creanga, nr 21'),
-            ('Emily Thompson', 'emily@example.com', 'Cluj-Napoca, Strada Alexandru Vaida Voievod, nr 11'),
-            ('Kimberly Kim', 'kimberly@example.com', 'Bucuresti, Strada Ion Creanga, nr 2')
+            ('Galbeaza Ciprian', 'galbeazaciprian@gmail.com', 'Iasi, Aleea Pacurari , nr 10'), 
+            ('Acatrinei Andra', 'acatrineiandra@gmail.com', 'Iasi, Strada Bistrita, nr 8'), 
+            ('Diaconu Mara', 'diaconumara12@gmail.com', 'Timisoara, Strada Mihai Eminescu, nr 10'),
+            ('Popa Ion', 'popaion512@gmail.com', 'Bucuresti, Strada Ion Creanga, nr 21'),
+            ('Zaharia Alexandru', 'alexandruzaharia@gmail.com', 'Cluj-Napoca, Strada Alexandru Vaida Voievod, nr 11'),
+            ('Florea Cosmin', 'floreacosmin11@gmail.com', 'Bucuresti, Strada Ion Creanga, nr 2'),
+            ('Dimitrescu Ioana', 'dimitrescuioana4@gmail.com', 'Brasov, Aleea Lupeni, nr 13'),
+            ('Artene Raluca', 'arteneraluca0@gmail.com', 'Brasov, Strada Izvorului, nr 5'),
+            ('Simion Tiberius', 'simiontiberius@gmail.com', 'Constanta, Strada 23 August, nr 1'),
+            ('Marinescu Andreea', 'marinescuandreea9@gmail.com', 'Constanta, Strada Calatis, nr 8'),
+            ('Iorga Florin', 'iorgaflorin@gmail.com', 'Oradea, Strada Luptei, nr 7'),
+            ('Anton Adrian', 'adriananton67@gmail.com', 'Oradea, Strada Transilvaniei, nr 30')
     ''')
 
     #products
     cursor.execute('''
         INSERT INTO products (name, quantity,price, description) VALUES
-            ('T-Shirt',30, 29, 'Short sleeve t-shirt'),
-            ('Dress',30, 79, 'Short sleeve dress'),
-            ('Jeans',30, 59, 'Blue jeans'),
-            ('Shorts',30, 39, 'Denim shorts'),
+            ('T-Shirt',70, 29, 'Short sleeve t-shirt'),
+            ('Dress',40, 79, 'Short sleeve dress'),
+            ('Jeans',60, 59, 'Blue jeans'),
+            ('Shorts',40, 39, 'Denim shorts'),
             ('Skirt',30, 49, 'Midi length skirt'),
-            ('Blouse',30, 69, 'White blouse'),
-            ('Shirt',30, 59, 'Button-up shirt'),
-            ('Sweater',30, 79, 'Crew neck sweater'),
+            ('Blouse',70, 69, 'White blouse'),
+            ('Shirt',80, 59, 'Button-up shirt'),
+            ('Sweater',100, 79, 'Crew neck sweater'),
             ('Coat',30, 99, 'Trench coat'),
-            ('Jacket',30, 79, 'Leather jacket')
+            ('Jacket',30, 79, 'Leather jacket'),
+            ('Hoodies',50, 89, 'Polyester Hoodie'),
+            ('Sleepwear',40, 39, 'Cotton sleepwear')
     ''')
 
     #categories
@@ -143,7 +154,8 @@ def insert_data():
             ('Jeans'),
             ('Shorts'),
             ('Coats'),
-            ('Jackets')
+            ('Jackets'),
+	        ('Sleepwear')
     ''')
 
     #product_categories
@@ -159,18 +171,26 @@ def insert_data():
             (8,1),
             (9,5),
             (9,6),
-            (10,6)
+            (10,6),
+            (11,1),
+            (12,7)
     ''')
 
     #orders
     cursor.execute('''
-        INSERT INTO orders (customer_id, order_date, shipping_address) VALUES 
-            (1, '2022-01-01 12:00:00', 'Iasi , Aleeaa Pacurari, nr 10'),
-            (2, '2022-01-02 13:00:00', 'Iasi, Miroslava, Strada Florilor , nr 25'),
-            (2, '2022-01-03 14:00:00', 'Timisoara, Strada Mihai Eminescu, nr 10'),
-            (4, '2022-01-04 15:00:00', 'Bucuresti, Strada Vasile Alecsandri, nr 25'),
-            (5, '2022-01-05 16:00:00', 'Cluj-Napoca, Strada Alexandru Vaida Voievod, nr 11'),
-            (6, '2022-01-06 17:00:00', 'Bucuresti, Strada Ion Creanga, nr 2')
+       INSERT INTO orders (customer_id, order_date, shipping_address) VALUES 
+	    (1, '2022-01-01', 'Iasi, Strada Bistrita, nr 8'),
+	    (2, '2022-01-02', 'Iasi, Aleea Pacurari, nr 10'), 
+	    (3, '2022-01-03', 'Timisoara, Strada Mihai Eminescu, nr 10'),
+	    (4, '2022-01-04', 'Bucuresti, Strada Ion Creanga, nr 21'),
+	    (5, '2022-01-05', 'Cluj-Napoca, Strada Alexandru Vaida Voievod, nr 11'),
+	    (6, '2022-01-06', 'Bucuresti, Strada Ion Creanga, nr 2'),
+	    (7, '2022-01-07', 'Brasov, Aleea Lupeni, nr 13'),
+	    (8, '2022-01-08', 'Brasov, Strada Izvorului, nr 5'),
+	    (9, '2022-01-09', 'Constanta, Strada 23 August, nr 1'),
+	    (10, '2022-01-10', 'Constanta, Strada Calatis, nr 8'),
+	    (11, '2022-01-11', 'Oradea, Strada Luptei, nr 7'),
+	    (12, '2022-01-12', 'Oradea, Strada Transilvaniei, nr 30')
     ''')
 
     cursor.execute("COMMIT")
