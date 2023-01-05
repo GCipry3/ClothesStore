@@ -166,9 +166,11 @@ def handle_add_product():
     conn = connect_to_database()
     cursor = conn.cursor()
     
-    cursor.execute("INSERT INTO products (name, price, description, quantity) VALUES (%s, %s, %s, %s)", (name, price, description, quantity))
-
-    cursor.execute("COMMIT")
+    try:
+        cursor.execute("INSERT INTO products (name, price, description, quantity) VALUES (%s, %s, %s, %s)", (name, price, description, quantity))
+        cursor.execute("COMMIT")
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Insert , Exception :{e}')
 
     return redirect('/products')
 

@@ -29,6 +29,7 @@ def create_tables():
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             billing_address VARCHAR(255) NOT NULL,
+            CHECK ( LENGTH(billing_address) >= 5 ),
             CHECK ( email REGEXP '[a-z0-9._%-]+@[a-z0-9._%-]+\.[a-z]{2,4}' ),
             CHECK ( LENGTH(name) >= 2 AND name REGEXP '^[a-zA-Z ]*$' ),
             constraint unique_email UNIQUE (email)
@@ -42,8 +43,11 @@ def create_tables():
             name VARCHAR(255) NOT NULL,
             price DECIMAL(10,2) NOT NULL,
             description TEXT NOT NULL,
-            quantity INT NOT NULL,
-            constraint positive_price check (price > 0)
+            quantity INT NOT NULL DEFAULT 1,
+            CHECK ( LENGTH(description) >= 5),
+            CHECK ( quantity >= 0 ),
+            CHECK ( LENGTH(name) >= 2 AND name REGEXP '^[a-zA-Z ]*$' ),
+            CHECK (price > 0)
         )
     ''')
 
@@ -51,7 +55,8 @@ def create_tables():
     cursor.execute('''
         CREATE TABLE categories (
             category_id INT PRIMARY KEY AUTO_INCREMENT,
-            name VARCHAR(255) NOT NULL
+            name VARCHAR(255) NOT NULL,
+            CHECK ( LENGTH(name) >= 2 AND name REGEXP '^[a-zA-Z ]*$' )
         )
     ''')
 
@@ -73,6 +78,7 @@ def create_tables():
             customer_id INT NOT NULL,
             order_date DATETIME NOT NULL,
             shipping_address VARCHAR(255) NOT NULL,
+            CHECK ( LENGTH(shipping_address) >= 5 ),
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
         )
     ''')
@@ -83,6 +89,7 @@ def create_tables():
             order_id INT NOT NULL,
             product_id INT NOT NULL,
             quantity INT NOT NULL,
+            CHECK ( quantity > 0 ),
             PRIMARY KEY (order_id, product_id),
             FOREIGN KEY (order_id) REFERENCES orders(order_id),
             FOREIGN KEY (product_id) REFERENCES products(product_id)
