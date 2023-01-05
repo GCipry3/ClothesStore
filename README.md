@@ -33,20 +33,20 @@ It allows you to __insert dynamic content into a template__ and keep the present
 * To do that we must go to our customers page
 * The customer page allows us to create, view, and update customer information in the database
 * Then we can easily create a __new customer__ from the top right form
-![Customers](https://github.com/GCipry3/ClothesStore/blob/main/docs/customers_page.png)
+![Customers](https://github.com/GCipry3/ClothesStore/blob/main/docs/customers.png)
 * If we want to make any chamges to any customer we can do that by typing the customer id in the __Update Customer__ form
 
 ### 4.Add Some Products into the database
 * To perform this we must go into our products page
 * There we can find an __Add Product__ form in the top right
-![Products](https://github.com/GCipry3/ClothesStore/blob/main/docs/products_page.png)
+![Products](https://github.com/GCipry3/ClothesStore/blob/main/docs/products.png)
 
 ### 5.The last step is to place an order
 * We have to navigate to the __Orders__ page
 * The orders page allows us to create, view, and update orders and the products in each order
-![Orders](https://github.com/GCipry3/ClothesStore/blob/main/docs/orders_page.png)
+![Orders](https://github.com/GCipry3/ClothesStore/blob/main/docs/orders.png)
 * After that we can enter into the __Basket__ of that order from the basket form
-![Basket](https://github.com/GCipry3/ClothesStore/blob/main/docs/basket_page.png)
+![Basket](https://github.com/GCipry3/ClothesStore/blob/main/docs/basket.png)
 * Here we can add ,remove or update existing products in the basket
 
 
