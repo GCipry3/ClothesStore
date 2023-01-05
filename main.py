@@ -230,6 +230,22 @@ def handle_add_category():
 
     return redirect('/products')
 
+
+@app.route('/remove-category', methods=['POST'])
+def handle_remove_category():
+    category_id = request.form['category_id']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"DELETE FROM product_categories WHERE category_id = {category_id}")
+    cursor.execute(f"DELETE FROM categories WHERE category_id = {category_id}")
+
+    cursor.execute("COMMIT")
+
+    return redirect('/products')
+
+
 @app.route('/add-product-category', methods=['POST'])
 def handle_add_product_category():
     product_id = request.form['product_id']

@@ -77,6 +77,14 @@
                         <button type="submit" class="btn btn-secondary">Remove Product</button>
                     </form><br><br>
 
+                    <form action="/remove-category" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="category_id" style="width:25%">Category ID</span>
+                            <input type="text" name="category_id" id="category_id" class="form-control" placeholder="ex. 2">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Remove Category</button>
+                    </form><br><br>
+
                     <form action="/update-product" method="post">
                         <div class="input-group mb-3 data_input_size">
                             <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
