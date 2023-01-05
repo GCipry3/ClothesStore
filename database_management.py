@@ -45,8 +45,8 @@ def create_tables():
             description TEXT NOT NULL,
             quantity INT NOT NULL DEFAULT 1,
             CHECK ( LENGTH(description) >= 5),
-            CHECK ( quantity >= 0 ),
-            CHECK ( LENGTH(name) >= 2 AND name REGEXP '^[a-zA-Z ]*$' ),
+            CHECK ( quantity > 0 ),
+            CHECK ( LENGTH(name) >= 2 ),
             CHECK (price > 0)
         )
     ''')
@@ -55,8 +55,7 @@ def create_tables():
     cursor.execute('''
         CREATE TABLE categories (
             category_id INT PRIMARY KEY AUTO_INCREMENT,
-            name VARCHAR(255) NOT NULL,
-            CHECK ( LENGTH(name) >= 2 AND name REGEXP '^[a-zA-Z ]*$' )
+            name VARCHAR(255) NOT NULL
         )
     ''')
 
