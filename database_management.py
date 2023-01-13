@@ -45,7 +45,7 @@ def create_tables():
             description TEXT NOT NULL,
             quantity INT NOT NULL DEFAULT 1,
             CHECK ( LENGTH(description) >= 5),
-            CHECK ( quantity > 0 ),
+            CHECK ( quantity >= 0 ),
             CHECK ( LENGTH(name) >= 2 ),
             CHECK (price > 0)
         )
@@ -206,6 +206,14 @@ def add_order_items(order_id, product_id, quantity):
     conn = connect_to_database()
     cursor = conn.cursor()
 
+    cursor.execute(f"""
+        SELECT quantity FROM products WHERE product_id = {product_id}
+    """)
+    product_quantity = cursor.fetchone()[0]
+
+    if quantity > product_quantity:
+        return False
+
     cursor.execute("""
         BEGIN
     """)
@@ -226,6 +234,8 @@ def add_order_items(order_id, product_id, quantity):
     """)
     
     cursor.execute("COMMIT")
+
+    return True
 
 
 def delete_order_items(order_id, product_id):

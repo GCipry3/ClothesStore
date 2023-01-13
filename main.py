@@ -253,10 +253,12 @@ def handle_add_product_category():
 
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    cursor.execute(f"INSERT INTO product_categories (product_id, category_id) VALUES ({product_id}, {category_id})")
-    cursor.execute("COMMIT")
-
+    try:
+        cursor.execute(f"INSERT INTO product_categories (product_id, category_id) VALUES ({product_id}, {category_id})")
+        cursor.execute("COMMIT")
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Insert , Exception :{e}')
+        
     return redirect('/products')
 
 @app.route('/orders', methods=['GET'])
@@ -286,9 +288,12 @@ def handle_add_order():
 
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    cursor.execute("INSERT INTO orders (customer_id, order_date, shipping_address) VALUES (%s, %s, %s)", (customer_id, order_date, shipping_address))
-    cursor.execute("COMMIT")
+    try:
+        cursor.execute("INSERT INTO orders (customer_id, order_date, shipping_address) VALUES (%s, %s, %s)", (customer_id, order_date, shipping_address))
+        cursor.execute("COMMIT")
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Insert , Exception :{e}')
+    
 
     return redirect('/orders')
 
@@ -327,7 +332,16 @@ def handle_execute_add_order_items():
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
 
-    add_order_items(order_id=order_id, product_id=product_id, quantity=quantity)
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+        SELECT quantity FROM products WHERE product_id = {product_id}
+    """)
+    product_quantity = cursor.fetchone()[0]
+
+    if not add_order_items(order_id=order_id, product_id=product_id, quantity=quantity):
+        return render_template('home.html', text = f"Not enought quantity for product '{product_id}', asked quantity: '{quantity}' , available quantity: {product_quantity}")
 
     return redirect('/orders')
 
@@ -363,3 +377,17 @@ def handle_remove_order():
     delete_order(order_id=order_id)
 
     return redirect('/orders')
+
+
+@app.route('/add-product-quantity', methods=['POST'])
+def handle_add_product_quantity():
+    product_id = request.form['product_id']
+    quantity = request.form['quantity']
+
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    cursor.execute(f"UPDATE products SET quantity = quantity + {quantity} WHERE product_id = {product_id}")
+    cursor.execute("COMMIT")
+
+    return redirect('/products')

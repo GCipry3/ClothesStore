@@ -59,7 +59,19 @@
                         </div>
                         <button type="submit" class="btn btn-secondary">Add Product</button>
                     </form><br>
+                    
 
+                    <form action="/add-product-quantity" method="post">
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="product_id" style="width:25%">Product ID</span>
+                            <input type="text" name="product_id" id="product_id" class="form-control" placeholder="ex. 5">
+                        </div>
+                        <div class="input-group mb-3 data_input_size">
+                            <span class="input-group-text" for="quantity" style="width:25%">Quantity</span>
+                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="ex. 10">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Quantity</button>
+                    </form><br><br>
 
                     <form action="/add-category" method="post">
                         <div class="input-group mb-3 data_input_size">
