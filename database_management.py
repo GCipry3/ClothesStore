@@ -209,29 +209,35 @@ def add_order_items(order_id, product_id, quantity):
     cursor.execute(f"""
         SELECT quantity FROM products WHERE product_id = {product_id}
     """)
-    product_quantity = cursor.fetchone()[0]
-
-    if quantity > product_quantity:
+    product_quantity = cursor.fetchone()
+    if product_quantity is None:
         return False
+    product_quantity = product_quantity[0]
 
-    cursor.execute("""
-        BEGIN
-    """)
+    if int(quantity) > int(product_quantity):
+        return False
+    try:
+        cursor.execute("""
+            BEGIN
+        """)
 
-    cursor.execute(f"""
-        INSERT INTO order_items (order_id, product_id, quantity)
-            SELECT {order_id}, {product_id}, {quantity}
-            FROM dual
-            WHERE {quantity} <= (SELECT quantity FROM products WHERE product_id = {product_id})
-    """)
+        cursor.execute(f"""
+            INSERT INTO order_items (order_id, product_id, quantity)
+                SELECT {order_id}, {product_id}, {quantity}
+                FROM dual
+                WHERE {quantity} <= (SELECT quantity FROM products WHERE product_id = {product_id})
+        """)
 
-    cursor.execute(f"""
-        UPDATE products
-            JOIN order_items ON order_items.product_id = products.product_id
-            SET products.quantity = products.quantity - order_items.quantity
-            WHERE products.product_id = {product_id} AND order_items.order_id = {order_id} AND order_items.product_id = {product_id} and
-                products.quantity >= order_items.quantity
-    """)
+        cursor.execute(f"""
+            UPDATE products
+                JOIN order_items ON order_items.product_id = products.product_id
+                SET products.quantity = products.quantity - order_items.quantity
+                WHERE products.product_id = {product_id} AND order_items.order_id = {order_id} AND order_items.product_id = {product_id} and
+                    products.quantity >= order_items.quantity
+        """)
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        return False
     
     cursor.execute("COMMIT")
 
@@ -243,8 +249,11 @@ def delete_order_items(order_id, product_id):
     cursor = conn.cursor()
     
     cursor.execute(f"SELECT quantity FROM order_items WHERE product_id = {product_id} and order_id = {order_id}")
-    quantity = cursor.fetchone()[0]
+    quantity = cursor.fetchone()
 
+    if quantity is None:
+        return False
+    quantity = quantity[0]
     cursor.execute(f"SELECT quantity FROM products WHERE product_id = {product_id}")
     product_quantity = cursor.fetchone()[0]
 
@@ -252,6 +261,7 @@ def delete_order_items(order_id, product_id):
     cursor.execute(f"DELETE FROM order_items WHERE product_id = {product_id} and order_id = {order_id}")
     
     cursor.execute("COMMIT")
+    return True
 
 
 

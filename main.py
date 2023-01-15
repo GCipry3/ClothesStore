@@ -212,10 +212,12 @@ def handle_execute_update_product():
 
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    cursor.execute(f"UPDATE products SET name = '{name}', price = '{price}', description = '{description}' WHERE product_id = {product_id}")
-    cursor.execute("COMMIT")
-
+    try:
+        cursor.execute(f"UPDATE products SET name = '{name}', price = '{price}', description = '{description}' WHERE product_id = {product_id}")
+        cursor.execute("COMMIT")
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Update: {product_id} , Exception :{e}')
+    
     return redirect('/products') 
 
 @app.route('/add-category', methods=['POST'])
@@ -338,11 +340,19 @@ def handle_execute_add_order_items():
     cursor.execute(f"""
         SELECT quantity FROM products WHERE product_id = {product_id}
     """)
-    product_quantity = cursor.fetchone()[0]
+    product_quantity = cursor.fetchone()
 
-    if not add_order_items(order_id=order_id, product_id=product_id, quantity=quantity):
-        return render_template('home.html', text = f"Not enought quantity for product '{product_id}', asked quantity: '{quantity}' , available quantity: {product_quantity}")
+    if product_quantity is None:
+        return render_template('home.html', text = f"Product '{product_id}' does not exist")
+    else:
+        product_quantity = product_quantity[0]
 
+
+    try:
+        if not add_order_items(order_id=order_id, product_id=product_id, quantity=quantity):
+            return render_template('home.html', text = f"Not enought quantity for product '{product_id}', asked quantity: '{quantity}' , available quantity: {product_quantity}")
+    except Exception as e:
+        return render_template('home.html', text = f"Invalid Insert , Exception :{e}")
     return redirect('/orders')
 
 
@@ -351,7 +361,8 @@ def handle_remove_order_item():
     product_id = request.form['product_id']
     order_id = request.form['order_id']
 
-    delete_order_items(order_id=order_id, product_id=product_id)
+    if not delete_order_items(order_id=order_id, product_id=product_id):
+        return render_template('home.html', text = f"Product '{product_id}' does not exist in order '{order_id}'")
 
     return redirect('/orders')
 
@@ -361,10 +372,11 @@ def handle_update_order_item():
     product_id = request.form['product_id']
     order_id = request.form['order_id']
     quantity = request.form['quantity']
-
-    delete_order_items(order_id=order_id, product_id=product_id)
-    add_order_items(order_id=order_id, product_id=product_id, quantity=quantity)
-
+    
+    if not delete_order_items(order_id=order_id, product_id=product_id) or\
+        not add_order_items(order_id=order_id, product_id=product_id, quantity=quantity):
+        return render_template('home.html', text = f"Product '{product_id}' does not exist in order '{order_id}'")
+    
     return redirect('/orders')
 
 @app.route('/remove-order', methods=['POST'])
@@ -386,8 +398,9 @@ def handle_add_product_quantity():
 
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    cursor.execute(f"UPDATE products SET quantity = quantity + {quantity} WHERE product_id = {product_id}")
-    cursor.execute("COMMIT")
-
+    try:
+        cursor.execute(f"UPDATE products SET quantity = quantity + {quantity} WHERE product_id = {product_id}")
+        cursor.execute("COMMIT")
+    except Exception as e:
+        return render_template ('home.html',text=f'Invalid Insert , Exception :{e}')
     return redirect('/products')
