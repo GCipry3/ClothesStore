@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
     <head>
         <title>Customers</title>
@@ -78,4 +79,45 @@
         </div>
         {% include 'blocks/js_src.html' %}
     </body>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customers</title>
+</head>
+<body><!-- Include a table to display the customers -->
+    <table>
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer[0] }}</td>
+                <td>{{ customer[1] }}</td>
+                <td>{{ customer[2] }}</td>
+                <td>{{ customer[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Include a form to add a new customer -->
+    <form action="/add-customer" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="phone">Phone:</label><br>
+        <input type="tel" id="phone" name="phone"><br><br>
+        <button type="submit">Add customer</button>
+    </form>
+    
+</body>
+>>>>>>> 8279490 (update)
 </html>

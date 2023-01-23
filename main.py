@@ -1,9 +1,132 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request, redirect
 from database_management import *
+=======
+from flask import Flask, request, render_template
+import mysql.connector
+
+DB_USER = 'root'
+DB_PASSWORD = '123456789'
+DB_NAME = 'storeproject'
+
+def connect_to_database():
+    conn = mysql.connector.connect(
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME
+    )
+    return conn
+
+
+def create_tables():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    # Create the Customers table
+    query = """
+        CREATE TABLE Customers (
+            customer_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            first_name VARCHAR(255) NOT NULL,
+            last_name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            phone VARCHAR(255) NOT NULL,
+            address VARCHAR(255) NOT NULL
+        )
+    """
+    cursor.execute(query)
+
+    # Create the Stores table
+    query = """
+        CREATE TABLE Stores (
+            store_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            store_name VARCHAR(255) NOT NULL,
+            address VARCHAR(255) NOT NULL,
+            phone VARCHAR(255) NOT NULL
+        )
+    """
+    cursor.execute(query)
+
+    # Create the Items table
+    query = """
+        CREATE TABLE Items (
+            item_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            name VARCHAR(255) NOT NULL,
+            description TEXT NOT NULL,
+            price DECIMAL(10,2) NOT NULL,
+            sizes VARCHAR(255) NOT NULL,
+            quantity INTEGER NOT NULL
+        )
+    """
+    cursor.execute(query)
+
+    # Create the Orders table
+    query = """
+        CREATE TABLE Orders (
+            order_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            customer_id INTEGER NOT NULL,
+            order_date DATE NOT NULL,
+            total_cost DECIMAL(10,2) NOT NULL,
+            store_id INTEGER NOT NULL,
+            FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+            FOREIGN KEY (store_id) REFERENCES Stores(store_id)
+        )
+    """
+    cursor.execute(query)
+
+    # Create the OrderItems table
+    query = """
+        CREATE TABLE OrderItems (
+            order_id INTEGER NOT NULL,
+            item_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL,
+            PRIMARY KEY (order_id, item_id),
+            FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+            FOREIGN KEY (item_id) REFERENCES Items(item_id)
+        )
+    """
+    cursor.execute(query)
+
+
+
+def delete_tables():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    # Disable foreign key checks to allow the tables to be deleted
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+
+    # Retrieve the names of all tables in the database
+    cursor.execute("SHOW TABLES")
+    tables = cursor.fetchall()
+
+    # Iterate through the list of table names and delete each table
+    for table in tables:
+        table_name = table[0]
+        cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+        
+    # Re-enable foreign key checks
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+
+
+
+# Get function that returns all the rows from a table
+def get_everything_from_table(table_name):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    # Query the database for a list of items
+    query = f"SELECT * FROM {table_name}"
+    cursor.execute(query)
+    items = cursor.fetchall()
+
+    return items
+
+>>>>>>> 8279490 (update)
 
 app = Flask(__name__)
 
 @app.route('/')
+<<<<<<< HEAD
 @app.route('/home')
 def home():
     return render_template('home.html')
@@ -303,10 +426,59 @@ def handle_add_order():
 @app.route('/open-basket', methods=['POST'])
 def handle_add_order_items():
     order_id = request.form['order_id']
+=======
+def home():
+    return render_template('home.html')
+
+@app.route('/create-tables', methods=['POST'])
+def handle_create_tables():
+    create_tables()
+    return 'Tables created successfully!'
+
+
+@app.route('/delete-tables', methods=['POST'])
+def handle_delete_tables():
+    delete_tables()
+    return 'Tables deleted successfully!'
+
+@app.route('/items')
+def items():
+    # Query the database for a list of items
+    items = get_everything_from_table("items")
+    return render_template('items.html', items=items)
+
+@app.route('/customers')
+def customers():
+    # Query the database for a list of customers
+    customers = get_everything_from_table("customers")
+    return render_template('customers.html', customers=customers)
+
+@app.route('/orders')
+def orders():
+    # Query the database for a list of orders
+    orders = get_everything_from_table("orders")
+    return render_template('orders.html', orders=orders)
+
+@app.route('/stores')
+def stores():
+    # Query the database for a list of stores
+    stores = get_everything_from_table("stores")
+    return render_template('stores.html', stores=stores)
+
+
+
+@app.route('/add-order', methods=['POST'])
+def add_order():
+    # Get the customer ID and total cost from the form
+    customer_id = request.form['customer_id']
+    total_cost = request.form['total_cost']
+    store_id = request.form['store_id']
+>>>>>>> 8279490 (update)
 
     conn = connect_to_database()
     cursor = conn.cursor()
 
+<<<<<<< HEAD
     cursor.execute(f"SELECT 'True' FROM orders WHERE order_id = {order_id}")
     if cursor.fetchone() is None:
         return render_template('home.html', text = "Order does not exist")
@@ -333,10 +505,28 @@ def handle_execute_add_order_items():
     order_id = request.form['order_id']
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
+=======
+    # Insert a new order into the orders table
+    query = "INSERT INTO orders (customer_id, order_date,total_cost,store_id) VALUES (%s, CURDATE(),%s,%s)"
+    values = (customer_id, total_cost,store_id)
+    cursor.execute(query, values)
+    conn.commit()
+
+    return 'Order added successfully!'
+
+@app.route('/add-item', methods=['POST'])
+def add_item():
+    # Get the name, price, description, and category from the form
+    name = request.form['name']
+    price = request.form['price']
+    description = request.form['description']
+    category = request.form['category']
+>>>>>>> 8279490 (update)
 
     conn = connect_to_database()
     cursor = conn.cursor()
 
+<<<<<<< HEAD
     cursor.execute(f"""
         SELECT quantity FROM products WHERE product_id = {product_id}
     """)
@@ -382,10 +572,27 @@ def handle_update_order_item():
 @app.route('/remove-order', methods=['POST'])
 def handle_remove_order():
     order_id = request.form['order_id']
+=======
+    # Insert a new item into the items table
+    query = "INSERT INTO items (name, price, description, category) VALUES (%s, %s, %s, %s)"
+    values = (name, price, description, category)
+    cursor.execute(query, values)
+    conn.commit()
+
+    return 'Item added successfully!'
+
+@app.route('/add-customer', methods=['POST'])
+def add_customer():
+    # Get the name, email, and phone from the form
+    name = request.form['name']
+    email = request.form['email']
+    phone = request.form['phone']
+>>>>>>> 8279490 (update)
 
     conn = connect_to_database()
     cursor = conn.cursor()
 
+<<<<<<< HEAD
     delete_order(order_id=order_id)
 
     return redirect('/orders')
@@ -404,3 +611,12 @@ def handle_add_product_quantity():
     except Exception as e:
         return render_template ('home.html',text=f'Invalid Insert , Exception :{e}')
     return redirect('/products')
+=======
+    # Insert a new customer into the customers table
+    query = "INSERT INTO customers (name, email, phone) VALUES (%s, %s, %s)"
+    values = (name, email, phone)
+    cursor.execute(query, values)
+    conn.commit()
+
+    return 'Customer added successfully!'
+>>>>>>> 8279490 (update)

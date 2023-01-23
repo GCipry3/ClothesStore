@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stores</title>
+</head>
+<body>
+    <!-- Include a table to display the items -->
+    <table>
+        <thead>
+            <tr>
+                <th>Store ID</th>
+                <th>Store Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for store in stores %}
+            <tr>
+                <td>{{ store[0] }}</td>
+                <td>{{ store[1] }}</td>
+                <td>{{ store[2] }}</td>
+                <td>{{ store[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Include a form to add a new item -->
+    <form action="/add-store" method="POST">
+        <label for="name">Store Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address"><br>
+
+        <label for="phone">Phone:</label><br>
+        <input type="text" id="phone" name="phone"><br><br>
+        
+        <button type="submit">Add store</button>
+    </form>
+
+</body>
+</html>

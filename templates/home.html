@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Home</title>
+<<<<<<< HEAD
         {% include 'blocks/css_links.html' %}
     </head>
 
@@ -17,5 +18,36 @@
             {% endif %}
         </div>
         {% include 'blocks/js_src.html' %}
+=======
+    </head>
+    <body>
+        <div class="container">
+            <!-- Include the form with the submit button -->
+            <form action="/create-tables" method="POST">
+                <button type="submit">Create tables</button>
+            </form>
+            <form action="/delete-tables" method="POST">
+                <button type="submit">Delete tables</button>
+            </form>
+
+            <!-- Include a navigation menu -->
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/items">Items</a></li>
+                    <li><a href="/customers">Customers</a></li>
+                    <li><a href="/orders">Orders</a></li>
+                </ul>
+            </nav>
+
+            <!-- Include a header and main content area -->
+            <header>
+                <h1>Welcome to the Clothes Store</h1>
+            </header>
+            <main>
+                <p>Here you can browse our selection of clothes and accessories, place orders, and manage your account.</p>
+            </main>
+        </div>
+>>>>>>> 8279490 (update)
     </body>
 </html>

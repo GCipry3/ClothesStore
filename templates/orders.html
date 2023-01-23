@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
     <head>
         <title>Orders</title>
@@ -78,3 +79,48 @@
         {% include 'blocks/js_src.html' %}
     </body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders</title>
+</head>
+<body>
+    <!-- Include a table to display the orders -->
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer ID</th>
+                <th>Order Date</th>
+                <th>Total Cost</th>
+                <th>Store ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order[0] }}</td>
+                <td>{{ order[1] }}</td>
+                <td>{{ order[2] }}</td>
+                <td>{{ order[3] }}</td>
+                <td>{{ order[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Include a form to add a new order -->
+    <form action="/add-order" method="POST">
+        <label for="customer_id">Customer ID:</label><br>
+        <input type="number" id="customer_id" name="customer_id"><br>
+        <label for="total_cost">Total cost:</label><br>
+        <input type="number" id="total_cost" name="total_cost"><br><br>
+        <label for="store_id">Store ID:</label><br>
+        <input type="number" id="store_id" name="store_id"><br><br>
+        <button type="submit">Add order</button>
+    </form>
+
+</body>
+</html>
+>>>>>>> 8279490 (update)
